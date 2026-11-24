@@ -49,7 +49,7 @@ analysis.py       → results/figures/*.png, results/tables/*.csv, results/summa
   - StubHub/viagogo were rejected: their terms of service forbid scrapers.
   - Ticombo passed all checks: robots.txt, terms, no login, no captcha.
   - robots.txt blocks `/buy` URLs; `scrape.py` skips them by hand.
-- **Fixtures and standings:** football-data.org API v4. Each run of `get_matches.py` writes dated files. Only two runs were saved (27.09 and 20.10), so a final run is needed for kickoff times and results. Team ranks at kickoff are recomputed from match results, not taken from a saved standings file.
+- **Fixtures and standings:** football-data.org API v4. Each run of `get_matches.py` writes dated files. Three runs were saved (27.09, 20.10, 24.11). The 24.11 run is final: all 100 matches FINISHED with results. Team ranks at kickoff are recomputed from match results, not taken from a saved standings file.
 - **Scope:** Premier League + LaLiga, 100 matches kicking off 17.10–23.11.2026. 97 have a Ticombo link: Levante–Athletic was never found, and Real Sociedad–Rayo and Getafe–Atlético were added late. One snapshot per match per day, 27.09 → 23.11, request quantity fixed to 1 ticket.
 - **Keys:**
   - `match_id` is the football-data.org fixture ID.
@@ -89,7 +89,7 @@ Categories (`categories_*.csv`): `category` (raw label), `averagePrice`, `availa
 - Category totals **don't match** match totals: categories cover about 37% of listed tickets.
   - 191 raw labels across about 40 stadiums, so categories stay a **secondary** analysis.
 - Some matches have days with no listings: price missing, 0 tickets. Exclude them from price analyses and keep them for supply.
-- LaLiga kickoff times are placeholders (00:00 in the API) until confirmed: 10 still at 00:00 in `matches.csv` (20.10 run). 9 matches differ by more than 1 h between Ticombo and football-data, 2 by more than a day (564748, 564757). Fixed by a final `get_matches.py` run.
+- LaLiga kickoff times were placeholders (00:00) in the 20.10 run, with 9 matches more than 1 h off Ticombo (2 by more than a day). Fixed by the final 24.11 `get_matches.py` run: 10 kickoffs updated, 0 at 00:00, 0 mismatches with Ticombo.
 - All CSVs are written in `utf-8-sig` so Excel shows accents correctly. The data itself is fine UTF-8; a "�" seen in a terminal is a display issue only.
 - Extreme prices exist: maximums up to about €31,000, category averages above €10,000.
 - One platform only: no official exchanges, other resale sites or private sales.
