@@ -1,0 +1,1 @@
+data/raw/raw_zip_file.zip filter=lfs diff=lfs merge=lfs -text

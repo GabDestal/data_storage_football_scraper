@@ -6,3 +6,4 @@ logs_parse_last.txt
 .env
 .DS_Store
 Thumbs.db
+!data/raw/raw_zip_file.zip
