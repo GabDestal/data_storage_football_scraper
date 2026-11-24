@@ -1,0 +1,101 @@
+﻿match_id,competition,matchday,kickoff_utc,home_team,away_team
+560603,PL,7,2026-10-17T11:30:00Z,Everton FC,Chelsea FC
+560602,PL,7,2026-10-17T14:00:00Z,Fulham FC,Hull City AFC
+560610,PL,7,2026-10-17T14:00:00Z,Manchester City FC,Ipswich Town FC
+560611,PL,7,2026-10-17T14:00:00Z,Brentford FC,Liverpool FC
+560607,PL,7,2026-10-17T16:30:00Z,Newcastle United FC,Aston Villa FC
+560604,PL,7,2026-10-18T13:00:00Z,AFC Bournemouth,Sunderland AFC
+560605,PL,7,2026-10-18T13:00:00Z,Leeds United FC,Manchester United FC
+560609,PL,7,2026-10-18T13:00:00Z,Brighton & Hove Albion FC,Crystal Palace FC
+560608,PL,7,2026-10-18T15:30:00Z,Nottingham Forest FC,Arsenal FC
+560606,PL,7,2026-10-19T19:00:00Z,Tottenham Hotspur FC,Coventry City FC
+560620,PL,8,2026-10-23T19:00:00Z,Ipswich Town FC,Nottingham Forest FC
+560614,PL,8,2026-10-24T11:30:00Z,Aston Villa FC,Manchester City FC
+560616,PL,8,2026-10-24T14:00:00Z,Arsenal FC,Everton FC
+560618,PL,8,2026-10-24T14:00:00Z,Coventry City FC,Fulham FC
+560617,PL,8,2026-10-24T16:30:00Z,Chelsea FC,Tottenham Hotspur FC
+560612,PL,8,2026-10-25T14:00:00Z,Liverpool FC,Brighton & Hove Albion FC
+560613,PL,8,2026-10-25T14:00:00Z,Crystal Palace FC,Newcastle United FC
+560615,PL,8,2026-10-25T14:00:00Z,Manchester United FC,AFC Bournemouth
+560619,PL,8,2026-10-25T14:00:00Z,Hull City AFC,Brentford FC
+560621,PL,8,2026-10-25T16:30:00Z,Sunderland AFC,Leeds United FC
+560626,PL,9,2026-10-31T12:30:00Z,Chelsea FC,Manchester United FC
+560623,PL,9,2026-10-31T15:00:00Z,Manchester City FC,Brighton & Hove Albion FC
+560624,PL,9,2026-10-31T15:00:00Z,AFC Bournemouth,Leeds United FC
+560625,PL,9,2026-10-31T15:00:00Z,Coventry City FC,Sunderland AFC
+560629,PL,9,2026-10-31T15:00:00Z,Hull City AFC,Ipswich Town FC
+560630,PL,9,2026-10-31T15:00:00Z,Brentford FC,Nottingham Forest FC
+560627,PL,9,2026-10-31T17:30:00Z,Tottenham Hotspur FC,Crystal Palace FC
+560628,PL,9,2026-10-31T20:00:00Z,Aston Villa FC,Fulham FC
+560631,PL,9,2026-11-01T16:30:00Z,Liverpool FC,Arsenal FC
+560622,PL,9,2026-11-02T20:00:00Z,Newcastle United FC,Everton FC
+560634,PL,10,2026-11-06T20:00:00Z,Everton FC,Coventry City FC
+560632,PL,10,2026-11-07T12:30:00Z,Leeds United FC,Tottenham Hotspur FC
+560640,PL,10,2026-11-07T15:00:00Z,Arsenal FC,Hull City AFC
+560633,PL,10,2026-11-07T15:00:00Z,Fulham FC,Newcastle United FC
+560641,PL,10,2026-11-07T17:30:00Z,Nottingham Forest FC,Manchester City FC
+560635,PL,10,2026-11-08T14:00:00Z,Crystal Palace FC,Liverpool FC
+560636,PL,10,2026-11-08T14:00:00Z,Sunderland AFC,Chelsea FC
+560637,PL,10,2026-11-08T14:00:00Z,Ipswich Town FC,AFC Bournemouth
+560638,PL,10,2026-11-08T14:00:00Z,Brighton & Hove Albion FC,Brentford FC
+560639,PL,10,2026-11-08T16:30:00Z,Manchester United FC,Aston Villa FC
+560643,PL,11,2026-11-21T12:30:00Z,Manchester City FC,Fulham FC
+560642,PL,11,2026-11-21T15:00:00Z,Chelsea FC,Leeds United FC
+560644,PL,11,2026-11-21T15:00:00Z,Aston Villa FC,Sunderland AFC
+560647,PL,11,2026-11-21T15:00:00Z,AFC Bournemouth,Nottingham Forest FC
+560648,PL,11,2026-11-21T15:00:00Z,Tottenham Hotspur FC,Ipswich Town FC
+560650,PL,11,2026-11-21T15:00:00Z,Coventry City FC,Crystal Palace FC
+560651,PL,11,2026-11-21T17:30:00Z,Newcastle United FC,Arsenal FC
+560646,PL,11,2026-11-22T14:00:00Z,Hull City AFC,Brighton & Hove Albion FC
+560645,PL,11,2026-11-22T16:30:00Z,Liverpool FC,Manchester United FC
+560649,PL,11,2026-11-23T20:00:00Z,Brentford FC,Everton FC
+564710,PD,9,2026-10-17T12:00:00Z,RCD Espanyol de Barcelona,Club Atlético de Madrid
+564708,PD,9,2026-10-17T14:15:00Z,Villarreal CF,Elche CF
+564713,PD,9,2026-10-17T16:30:00Z,Real Betis Balompié,FC Barcelona
+564711,PD,9,2026-10-17T19:00:00Z,Valencia CF,Athletic Club
+564715,PD,9,2026-10-18T12:00:00Z,CA Osasuna,Real Racing Club de Santander
+564712,PD,9,2026-10-18T14:15:00Z,RC Celta de Vigo,Deportivo Alavés
+564714,PD,9,2026-10-18T16:30:00Z,Málaga CF,Real Sociedad de Fútbol
+564709,PD,9,2026-10-18T19:00:00Z,Real Madrid CF,Sevilla FC
+564717,PD,9,2026-10-19T19:00:00Z,Getafe CF,Rayo Vallecano de Madrid
+564685,PD,6,2026-10-21T18:00:00Z,Levante UD,Athletic Club
+564719,PD,10,2026-10-23T19:00:00Z,Deportivo Alavés,Málaga CF
+564718,PD,10,2026-10-24T12:00:00Z,Rayo Vallecano de Madrid,Elche CF
+564727,PD,10,2026-10-24T14:15:00Z,Real Racing Club de Santander,RCD Espanyol de Barcelona
+564722,PD,10,2026-10-24T16:30:00Z,Valencia CF,Villarreal CF
+564724,PD,10,2026-10-24T19:00:00Z,Club Atlético de Madrid,RC Deportivo La Coruña
+564720,PD,10,2026-10-25T13:00:00Z,Athletic Club,Getafe CF
+564725,PD,10,2026-10-25T15:15:00Z,RC Celta de Vigo,Real Betis Balompié
+564726,PD,10,2026-10-25T17:30:00Z,Real Sociedad de Fútbol,Levante UD
+564723,PD,10,2026-10-25T20:00:00Z,FC Barcelona,Real Madrid CF
+564721,PD,10,2026-10-26T20:00:00Z,Sevilla FC,CA Osasuna
+564737,PD,11,2026-10-30T20:00:00Z,Villarreal CF,RCD Espanyol de Barcelona
+564730,PD,11,2026-10-31T13:00:00Z,Levante UD,Club Atlético de Madrid
+564735,PD,11,2026-10-31T15:15:00Z,Rayo Vallecano de Madrid,RC Celta de Vigo
+564736,PD,11,2026-10-31T17:30:00Z,Real Betis Balompié,Málaga CF
+564732,PD,11,2026-10-31T20:00:00Z,FC Barcelona,Deportivo Alavés
+564733,PD,11,2026-11-01T13:00:00Z,Getafe CF,Sevilla FC
+564734,PD,11,2026-11-01T15:15:00Z,Real Racing Club de Santander,Real Madrid CF
+564728,PD,11,2026-11-01T17:30:00Z,Elche CF,Valencia CF
+564729,PD,11,2026-11-01T20:00:00Z,Athletic Club,Real Sociedad de Fútbol
+564731,PD,11,2026-11-02T20:00:00Z,RC Deportivo La Coruña,CA Osasuna
+564740,PD,12,2026-11-06T20:00:00Z,Sevilla FC,Deportivo Alavés
+564744,PD,12,2026-11-07T13:00:00Z,Málaga CF,Real Racing Club de Santander
+564745,PD,12,2026-11-07T15:15:00Z,RCD Espanyol de Barcelona,RC Deportivo La Coruña
+564739,PD,12,2026-11-07T17:30:00Z,CA Osasuna,Athletic Club
+564741,PD,12,2026-11-07T20:00:00Z,Valencia CF,Real Madrid CF
+564738,PD,12,2026-11-08T13:00:00Z,Elche CF,Real Betis Balompié
+564743,PD,12,2026-11-08T15:15:00Z,Real Sociedad de Fútbol,Rayo Vallecano de Madrid
+564742,PD,12,2026-11-08T17:30:00Z,RC Celta de Vigo,Levante UD
+564747,PD,12,2026-11-08T17:30:00Z,Villarreal CF,Getafe CF
+564746,PD,12,2026-11-08T20:00:00Z,Club Atlético de Madrid,FC Barcelona
+564748,PD,13,2026-11-22T00:00:00Z,Athletic Club,RCD Espanyol de Barcelona
+564749,PD,13,2026-11-22T00:00:00Z,FC Barcelona,Villarreal CF
+564750,PD,13,2026-11-22T00:00:00Z,Real Racing Club de Santander,Real Sociedad de Fútbol
+564751,PD,13,2026-11-22T00:00:00Z,Rayo Vallecano de Madrid,Valencia CF
+564752,PD,13,2026-11-22T00:00:00Z,CA Osasuna,Málaga CF
+564753,PD,13,2026-11-22T00:00:00Z,Getafe CF,Club Atlético de Madrid
+564754,PD,13,2026-11-22T00:00:00Z,Real Madrid CF,RC Celta de Vigo
+564755,PD,13,2026-11-22T00:00:00Z,Deportivo Alavés,RC Deportivo La Coruña
+564756,PD,13,2026-11-22T00:00:00Z,Sevilla FC,Real Betis Balompié
+564757,PD,13,2026-11-22T00:00:00Z,Levante UD,Elche CF

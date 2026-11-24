@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+data/raw/ticombo/
+logs_parse_last.txt
+*.zip
+.env
+.DS_Store
+Thumbs.db
