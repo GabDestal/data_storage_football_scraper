@@ -15,7 +15,7 @@ The project is graded on: collection, cleaning, storage, analysis, communication
 
 ## Deadlines
 
-- **27.11.2026:** final report (PDF) + code. Collection ended 24.11.
+- **27.11.2026:** final report (PDF) + code. Collection ended 23.11 (last snapshot 23.11 09:00 UTC).
 - **02.12.2026:** presentation, 15 min + questions. Slides submitted by the end of the session.
 
 ## Hard rules
@@ -49,8 +49,8 @@ analysis.py       → results/figures/*.png, results/tables/*.csv, results/summa
   - StubHub/viagogo were rejected: their terms of service forbid scrapers.
   - Ticombo passed all checks: robots.txt, terms, no login, no captcha.
   - robots.txt blocks `/buy` URLs; `scrape.py` skips them by hand.
-- **Fixtures and standings:** football-data.org API v4, refreshed weekly. Each refresh writes dated standings files.
-- **Scope:** Premier League + LaLiga, 100 matches kicking off 17.10–23.11.2026. 97 have a Ticombo link: Levante–Athletic was never found, and Real Sociedad–Rayo and Getafe–Atlético were added late. One snapshot per match per day, 27.09 → 24.11, request quantity fixed to 1 ticket.
+- **Fixtures and standings:** football-data.org API v4. Each run of `get_matches.py` writes dated files. Only two runs were saved (27.09 and 20.10), so a final run is needed for kickoff times and results. Team ranks at kickoff are recomputed from match results, not taken from a saved standings file.
+- **Scope:** Premier League + LaLiga, 100 matches kicking off 17.10–23.11.2026. 97 have a Ticombo link: Levante–Athletic was never found, and Real Sociedad–Rayo and Getafe–Atlético were added late. One snapshot per match per day, 27.09 → 23.11, request quantity fixed to 1 ticket.
 - **Keys:**
   - `match_id` is the football-data.org fixture ID.
   - An event snapshot = (`match_id`, `snapshot_utc`).
@@ -61,7 +61,7 @@ analysis.py       → results/figures/*.png, results/tables/*.csv, results/summa
 | Field | Meaning |
 |---|---|
 | `listing_startPrice` | lowest asking price, without fees |
-| `listing_finalStartPrice` | lowest asking price, fees included. Always exactly 1.30 × `listing_startPrice`, and has more non-missing values. **Main price measure.** |
+| `listing_finalStartPrice` | lowest asking price, fees included. Usually 1.30 × `listing_startPrice`, but 219 of 3,245 rows with both prices deviate by more than 1% (ratio 0.09–1.35): `clean_data.py` flags them. Has more non-missing values. **Main price measure.** |
 | `listing_avgPrice`, `listing_maxPrice` | average and maximum. Distorted by extreme listings, so don't use as main measures. |
 | `listing_availableTickets` | tickets listed. Treat as **listed supply**, not demand. |
 | `event_kickoff_platform` / `kickoff_utc_reference` | kickoff according to Ticombo / football-data |
@@ -89,7 +89,8 @@ Categories (`categories_*.csv`): `category` (raw label), `averagePrice`, `availa
 - Category totals **don't match** match totals: categories cover about 37% of listed tickets.
   - 191 raw labels across about 40 stadiums, so categories stay a **secondary** analysis.
 - Some matches have days with no listings: price missing, 0 tickets. Exclude them from price analyses and keep them for supply.
-- LaLiga kickoff times are placeholders (00:00 in the API) until confirmed.
+- LaLiga kickoff times are placeholders (00:00 in the API) until confirmed: 10 still at 00:00 in `matches.csv` (20.10 run). 9 matches differ by more than 1 h between Ticombo and football-data, 2 by more than a day (564748, 564757). Fixed by a final `get_matches.py` run.
+- All CSVs are written in `utf-8-sig` so Excel shows accents correctly. The data itself is fine UTF-8; a "�" seen in a terminal is a display issue only.
 - Extreme prices exist: maximums up to about €31,000, category averages above €10,000.
 - One platform only: no official exchanges, other resale sites or private sales.
 
@@ -124,7 +125,7 @@ Automatic, no stadium-by-stadium manual mapping:
 
 Preliminary result on October data (70 matches): the lowest price is about **19% lower in the last 2 days** than 14–21 days before (PL −27%, LaLiga −9%). Weekend matches are about 40% more expensive. This must be **re-checked on the final data**.
 
-`data/reference/derbies.csv` holds the hand-made derby list. Definition: same city, plus El Clásico and Liverpool–Man United. The group must verify it.
+`data/reference/derbies.csv` holds the hand-made derby list. Definition: same city, plus El Clásico, Liverpool–Man United and the Basque derby (Athletic–Real Sociedad). 26 pairs (`team_a`, `team_b`, `competition`, `derby_type`, `derby_name`), names exactly as in `matches.csv`. 6 of our 100 matches are derbies. Not included (borderline, group to decide): Getafe vs Madrid clubs, Celta–Deportivo, Newcastle–Sunderland.
 
 ## Report outline (5 pages max)
 
@@ -157,4 +158,5 @@ Preliminary result on October data (70 matches): the lowest price is about **19%
 ## Repository notes
 
 - `data/raw/ticombo/` is in `.gitignore` (too large). The full raw archive is `data/raw/raw_zip_file.zip`, committed with Git LFS and also attached to the GitHub Release `raw-data-v1`. Four example pages are in `data/raw_sample/`.
+- `docs/justification.docx` is the round 1 justification document. `docs/tos_checks/` is still empty: the ToS / robots.txt screenshots must be found or retaken (with the new date stated).
 - Charts: matplotlib, one axis per chart, labelled axes, legend for 2 or more series. Use the same colours everywhere: PL `#2a78d6`, LaLiga `#eb6834`.
