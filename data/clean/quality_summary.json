@@ -1,0 +1,23 @@
+{
+  "event_rows_total": 5435,
+  "matches_total": 97,
+  "flag_duplicate_day": 0,
+  "flag_post_kickoff": 2068,
+  "flag_kickoff_mismatch_rows": 0,
+  "flag_kickoff_mismatch_matches": 0,
+  "eligible_pre_match_rows": 3367,
+  "eligible_pre_match_matches": 97,
+  "pre_match_no_listings": 124,
+  "pre_match_fee_inconsistent": 16,
+  "pre_match_fee_above_30": 203,
+  "pre_match_fee_above_30_first_date": "2026-11-04",
+  "eligible_price_rows": 3227,
+  "eligible_price_matches": 95,
+  "eligible_price_in_window_21d": 1907,
+  "extreme_price_threshold_eur": 1166.62,
+  "flag_extreme_price": 33,
+  "category_rows_total": 26060,
+  "category_rows_pre_match": 17169,
+  "category_extreme_price_threshold_eur": 5150.0,
+  "category_flag_extreme_price": 165
+}

@@ -62,7 +62,7 @@ analysis.py       → results/figures/*.png, results/tables/*.csv, results/summa
 | Field | Meaning |
 |---|---|
 | `listing_startPrice` | lowest asking price, without fees |
-| `listing_finalStartPrice` | lowest asking price, fees included. Usually 1.30 × `listing_startPrice`, but 219 of 3,245 rows with both prices deviate by more than 1% (ratio 0.09–1.35): `clean_data.py` flags them. Has more non-missing values. **Main price measure.** |
+| `listing_finalStartPrice` | lowest asking price, fees included. Usually 1.30 × `listing_startPrice`. From 04.11, 203 pre-match rows show about 1.35 (looks like a fee increase; kept, `flag_fee_above_30`). 16 rows are outside 1.30–1.35 (ratio 0.09–1.25) and excluded from price analyses (`flag_fee_inconsistent`). Because of the fee change, the base-price robustness check (A6) matters. Every pre-kickoff row has both prices; rows with only the final price are post-kickoff or no-listing pages. **Main price measure.** |
 | `listing_avgPrice`, `listing_maxPrice` | average and maximum. Distorted by extreme listings, so don't use as main measures. |
 | `listing_availableTickets` | tickets listed. Treat as **listed supply**, not demand. |
 | `event_kickoff_platform` / `kickoff_utc_reference` | kickoff according to Ticombo / football-data |
@@ -89,7 +89,8 @@ Categories (`categories_*.csv`): `category` (raw label), `averagePrice`, `availa
 - The 06.10 run was interrupted. Its log lines point to deleted files, and `parse.py` skips them with a warning.
 - Category totals **don't match** match totals: categories cover about 37% of listed tickets.
   - 191 raw labels across about 40 stadiums, so categories stay a **secondary** analysis.
-- Some matches have days with no listings: price missing, 0 tickets. Exclude them from price analyses and keep them for supply.
+- Some matches have days with no listings (0 tickets). The page can still show an old "from" price, so `flag_no_listings` is based on tickets, not on a missing price. Exclude them from price analyses and keep them for supply. Two LaLiga matches (564717, 564733) never had listings before kickoff.
+- Cleaning result (`data/clean/quality_summary.json`): 5,435 event rows, 2,068 post-kickoff, 0 duplicate days, 0 kickoff mismatches → 3,367 pre-match rows (97 matches); 124 no-listing, 16 inconsistent fee → 3,227 price rows (95 matches), 1,907 of them in the 21-day window. Top 1% threshold: €1,166.62 (33 rows).
 - LaLiga kickoff times were placeholders (00:00) in the 20.10 run, with 9 matches more than 1 h off Ticombo (2 by more than a day). Fixed by the final 24.11 `get_matches.py` run: 10 kickoffs updated, 0 at 00:00, 0 mismatches with Ticombo.
 - All CSVs are written in `utf-8-sig` so Excel shows accents correctly. The data itself is fine UTF-8; a "�" seen in a terminal is a display issue only.
 - Extreme prices exist: maximums up to about €31,000, category averages above €10,000.
