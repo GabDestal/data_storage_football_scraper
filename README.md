@@ -15,7 +15,8 @@ This folder contains our first raw dataset and the code to collect it again. Why
 | `parse.py` | first version of the table: one row per listing per snapshot |
 | `data/reference/match_urls.csv` | link between each match and its page on the platform |
 | `data/reference/face_values.csv` | official prices from the club websites |
-| `data/reference/seat_category_map.csv` | which platform category corresponds to which club category |
+| `map_categories.py` | groups the platform's seat labels (side, behind goal, corner, premium, away) with keyword rules |
+| `data/reference/seat_category_map.csv` | output of `map_categories.py`: one row per seat label with its group and stand level |
 | `data/raw/` | everything we downloaded, never modified |
 | `data/raw/scrape_log.csv` | every request we made, with its status (success, blocked, error...) |
 | `data/raw/raw_zip_file.zip` | all 5,463 raw Ticombo pages (27.09 → 23.11), zipped, stored with Git LFS |

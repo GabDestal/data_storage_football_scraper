@@ -97,11 +97,16 @@ Categories (`categories_*.csv`): `category` (raw label), `averagePrice`, `availa
 
 Automatic, no stadium-by-stadium manual mapping:
 1. Normalise labels: lowercase, strip accents and spaces.
-2. Assign a tier with keyword rules:
-   - **away:** away, visiting, visitors, visitantes
-   - **hospitality:** vip, hospitality, club, lounge, bar, package, suite, platinum, palco
-   - **general:** everything else
-3. Output `seat_category_map.csv` with columns label, tier, matched keyword.
+2. Assign a `seat_group` with keyword rules, first match wins, in this order (most labels describe position, not home/away, so grouping is by position):
+   - **away:** away, visiting, visitors, visitante
+   - **premium:** vip, hospitality, club, lounge, bar, package, suite, platinum, palco, corporate, premium, box, dugout, offsite…
+   - **corner:** corner, esquina
+   - **behind_goal:** shortside, fondo, gol, goal
+   - **side:** longside, tribuna, lateral, preferencia, main stand
+   - **unmapped:** no keyword (e.g. "Categoria 1", stadium-specific names like "Rio Alto")
+   A separate `level` column (upper / middle / lower) comes from alta/baja/superior/inferior etc.
+3. Output `seat_category_map.csv`: category, label_norm, seat_group, level, matched_keyword, double_match, n_matches, n_rows, n_tickets.
+   On categories_v0: 230 labels; side 49.7% of category tickets, behind_goal 38.0%, premium 7.6%, unmapped 2.5%, away 1.3%, corner 0.9%.
 4. Check by hand only the 20–30 most frequent labels and any double matches. Report the share of tickets mapped.
 5. Alternative grouping: within each match and snapshot, split categories into price thirds (cheap, mid, premium).
 
