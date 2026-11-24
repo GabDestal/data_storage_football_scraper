@@ -1,4 +1,4 @@
-category,label_norm,seat_group,level,matched_keyword,double_match,n_matches,n_rows,n_tickets
+﻿category,label_norm,seat_group,level,matched_keyword,double_match,n_matches,n_rows,n_tickets
 Longside Upper Tier,longside upper tier,side,upper,longside,False,45,2365,216579
 Longside Lower Tier,longside lower tier,side,lower,longside,False,45,2394,208333
 Shortside Upper Tier,shortside upper tier,behind_goal,upper,shortside,False,41,1972,181548

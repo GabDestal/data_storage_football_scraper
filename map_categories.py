@@ -113,7 +113,8 @@ labels["level"] = labels["label_norm"].apply(find_level)
 
 cols = ["category", "label_norm", "seat_group", "level", "matched_keyword",
         "double_match", "n_matches", "n_rows", "n_tickets"]
-labels[cols].to_csv(OUTPUT, index=False)
+# utf-8-sig like our other CSVs, so Excel shows accents (Categoría) correctly
+labels[cols].to_csv(OUTPUT, index=False, encoding="utf-8-sig")
 print(f"Wrote {OUTPUT}: {len(labels)} labels")
 
 # --- Checks to report ---

@@ -1,0 +1,26 @@
+﻿team_a,team_b,competition,derby_type,derby_name
+Arsenal FC,Brentford FC,PL,same_city,London
+Arsenal FC,Chelsea FC,PL,same_city,London
+Arsenal FC,Crystal Palace FC,PL,same_city,London
+Arsenal FC,Fulham FC,PL,same_city,London
+Arsenal FC,Tottenham Hotspur FC,PL,same_city,London
+Brentford FC,Chelsea FC,PL,same_city,London
+Brentford FC,Crystal Palace FC,PL,same_city,London
+Brentford FC,Fulham FC,PL,same_city,London
+Brentford FC,Tottenham Hotspur FC,PL,same_city,London
+Chelsea FC,Crystal Palace FC,PL,same_city,London
+Chelsea FC,Fulham FC,PL,same_city,London
+Chelsea FC,Tottenham Hotspur FC,PL,same_city,London
+Crystal Palace FC,Fulham FC,PL,same_city,London
+Crystal Palace FC,Tottenham Hotspur FC,PL,same_city,London
+Fulham FC,Tottenham Hotspur FC,PL,same_city,London
+Manchester City FC,Manchester United FC,PL,same_city,Manchester
+Everton FC,Liverpool FC,PL,same_city,Liverpool (Merseyside)
+Real Madrid CF,Club Atlético de Madrid,PD,same_city,Madrid
+Real Madrid CF,Rayo Vallecano de Madrid,PD,same_city,Madrid
+Club Atlético de Madrid,Rayo Vallecano de Madrid,PD,same_city,Madrid
+FC Barcelona,RCD Espanyol de Barcelona,PD,same_city,Barcelona
+Sevilla FC,Real Betis Balompié,PD,same_city,Seville
+Valencia CF,Levante UD,PD,same_city,Valencia
+Real Madrid CF,FC Barcelona,PD,rivalry,El Clásico
+Liverpool FC,Manchester United FC,PL,rivalry,North West derby
