@@ -12,6 +12,7 @@ Run the scripts in this order. Scripts marked *(to do)* are not in the repositor
 | Step | Script | Reads | Writes |
 |---|---|---|---|
 | 1 | `get_matches.py` | football-data.org API | `data/reference/matches.csv`, `data/raw/football_data/*.json` |
+| 1b | `get_season_results.py` | football-data.org API | `data/raw/football_data/<date>_season_*.json` (all season results, for ranks at kickoff) |
 | 2 | `scrape.py` (**done, do not rerun**) | `data/reference/match_urls.csv` | `data/raw/ticombo/<date>/*.html`, `data/raw/scrape_log.csv` |
 | 3 | `parse.py` | raw pages + scrape log | `data/events_v0.csv`, `data/categories_v0.csv` |
 | 4 | `clean_data.py` *(to do)* | `*_v0.csv` | `data/clean/` (rows flagged, never deleted) |
@@ -27,6 +28,7 @@ git lfs pull                      # gets the raw zip if it is only a few bytes
 cd data/raw && unzip raw_zip_file.zip && cd ../..   # -> data/raw/ticombo/<date>/*.html
 export FOOTBALL_DATA_TOKEN=...    # free key on football-data.org (only for get_matches.py)
 python get_matches.py
+python get_season_results.py
 python parse.py
 python clean_data.py
 python map_categories.py

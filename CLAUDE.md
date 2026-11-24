@@ -33,6 +33,7 @@ The project is graded on: collection, cleaning, storage, analysis, communication
 
 ```
 get_matches.py    → data/reference/matches.csv + data/raw/football_data/<date>_{matches,standings}_{PL,PD}.json
+get_season_results.py → data/raw/football_data/<date>_season_{PL,PD}.json (all season results, for ranks at kickoff)
 scrape.py         → data/raw/ticombo/<date>/*.html + data/raw/scrape_log.csv     (DONE, do not rerun)
 parse.py          → data/events_v0.csv, data/categories_v0.csv
 clean_data.py     → data/clean/{events,categories}_all_clean.csv (flags), *_pre_match.csv, quality_summary.json
@@ -79,7 +80,7 @@ Categories (`categories_*.csv`): `category` (raw label), `averagePrice`, `availa
 5. **Common window:** the last 21 days before kickoff, for trajectories. Every match has it (peer review 1).
 6. **Extreme prices** are flagged but kept, and handled through robustness checks (without the top 1%).
 7. **Face values and markup are dropped.** The reference file was never filled, face values are ranges, and the question doesn't need them.
-8. **Standings:** for each match, use the most recent standings file dated *before* kickoff, never later information.
+8. **Standings:** each team's rank at kickoff is recomputed in `features.py` from the official results of matches played *before* that kickoff (`data/raw/football_data/<date>_season_{PL,PD}.json`, from `get_season_results.py`), never later information. Replaces the planned weekly standings refreshes, which were only saved 3 times.
 9. **Storage:** SQLite with 4 normalised tables (`matches`, `standings`, `event_snapshots`, `category_snapshots`), with primary and foreign keys and no repeated match columns. The report compares it with CSV and with Parquet + DuckDB.
 
 ## Known data issues (document them, don't hide them)
