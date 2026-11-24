@@ -50,7 +50,7 @@ python analysis.py
 | `data/reference/matches.csv` | the 100 matches: id, league, matchday, kickoff, teams |
 | `data/reference/match_urls.csv` | link between each match and its Ticombo page |
 | `data/reference/seat_category_map.csv` | seat label → seat group (side, behind goal, corner, premium, away) and stand level |
-| `data/reference/derbies.csv` | hand-made derby list: same city, plus El Clásico and Liverpool–Man United |
+| `data/reference/derbies.csv` | hand-made derby list: same city, plus El Clásico, Liverpool–Man United and the Basque derby (Athletic–Real Sociedad) |
 | `data/reference/face_values.csv` | official prices from the club websites (dropped from the analysis after peer review) |
 | `docs/justification.docx` | round 1 justification of our choices |
 | `docs/tos_checks/` | screenshots of the terms of service / robots.txt we checked |

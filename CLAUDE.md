@@ -125,7 +125,7 @@ Automatic, no stadium-by-stadium manual mapping:
 
 Preliminary result on October data (70 matches): the lowest price is about **19% lower in the last 2 days** than 14–21 days before (PL −27%, LaLiga −9%). Weekend matches are about 40% more expensive. This must be **re-checked on the final data**.
 
-`data/reference/derbies.csv` holds the hand-made derby list. Definition: same city, plus El Clásico and Liverpool–Man United. 25 pairs (`team_a`, `team_b`, `competition`, `derby_type`, `derby_name`), names exactly as in `matches.csv`. 5 of our 100 matches are derbies. Not included (borderline, group to decide): Getafe vs Madrid clubs, Athletic–Real Sociedad, Celta–Deportivo, Newcastle–Sunderland.
+`data/reference/derbies.csv` holds the hand-made derby list. Definition: same city, plus El Clásico, Liverpool–Man United and the Basque derby (Athletic–Real Sociedad). 26 pairs (`team_a`, `team_b`, `competition`, `derby_type`, `derby_name`), names exactly as in `matches.csv`. 6 of our 100 matches are derbies. Not included (borderline, group to decide): Getafe vs Madrid clubs, Celta–Deportivo, Newcastle–Sunderland.
 
 ## Report outline (5 pages max)
 
