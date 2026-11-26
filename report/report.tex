@@ -35,7 +35,7 @@ We ask how football ticket resale (asking) prices evolve in the weeks before a m
 
 \textbf{Scope and collection.} The 100 Premier League and LaLiga matches kicking off 17.10--23.11.2026 (50 per league); 97 were on Ticombo (all 50 Premier League, 47 LaLiga). Fixtures, kickoffs and results come from the football-data.org API. A scheduled run requested each match page once a day (1 ticket, 4--8 seconds between requests): 5,485 requests, 5,484 successful, over 57 days from 27.09 to 23.11 (03.10 is missing). A day's prices cannot be collected again, so we kept all 5,463 raw pages (zipped, in Git LFS and a GitHub release).
 
-\textbf{Legal checks.} We checked robots.txt and the terms on 27.09, before collecting; the screenshots in \texttt{docs/tos\_checks} were retaken on 26.11. Ticombo's robots.txt only disallows \texttt{/*/styleguide/}, \texttt{/*/buy\$} and \texttt{/*/userInfo/*}, and our scraper skips \texttt{/buy} URLs. Ticombo's terms (last updated August 2026) have no clause on robots, scrapers or automated access. The pages need no login and showed no captcha. We store no personal data. StubHub was rejected because its terms forbid ``any robot, spider, scraper or other automated means''; viagogo belongs to the same group and was rejected too.
+\textbf{Legal checks.} We checked robots.txt and the terms on 27.09, before collecting; the screenshots in \texttt{docs/tos\_checks} were retaken on 26.11. Ticombo's robots.txt only disallows \texttt{/*/styleguide/}, \texttt{/*/buy\$} and \texttt{/*/userInfo/*}, and our scraper skips \texttt{/buy} URLs. Ticombo's terms (last updated August 2026) have no clause on robots, scrapers or automated access to the site (the only mention of bots concerns sellers buying tickets). The pages need no login and showed no captcha. We store no personal data. StubHub was rejected because its terms forbid ``any robot, spider, scraper or other automated means''; viagogo belongs to the same group and was rejected too.
 
 \section{Cleaning}
 
@@ -93,7 +93,7 @@ Parquet + DuckDB & 5 & 0.39 & 10.8 & yes & no & no \\
 
 \section{Results}
 
-\textbf{Method.} Trajectories divide each match's lowest price by its median 14--21 days before kickoff (index 100). The fixed-effects (FE) regression is $\log(\mathrm{price}) \sim$ day bin $+$ match dummies, with standard errors clustered by match; bins are whole days before kickoff (0--2, 3--6, 7--13, 14--21 as reference). The match dummies absorb each match's price level, so the bins measure how the price moves within a match. A4 is one OLS across matches with robust (HC1) standard errors. All outputs are in \texttt{results/}.
+\textbf{Method.} Trajectories divide each match's lowest price by its median 14--21 days before kickoff (index 100). The fixed-effects (FE) regression is $\log(\mathrm{price}) \sim$ day bin $+$ match dummies, with standard errors clustered by match; bins are whole days before kickoff (0--2, 3--6, 7--13, 14--21 as reference). The match dummies absorb each match's price level, so the bins measure how the price moves within a match. A4 is one OLS across matches with robust (HC1) standard errors. Team ranks at kickoff are rebuilt from the official results of matches finished before each kickoff (football-data.org); the rebuilt tables match all six standings files saved during collection. All outputs are in \texttt{results/}.
 
 \subsection*{A0 Data overview}
 \obs 97 of 100 matches have a Ticombo page, with a median of 33 pre-kickoff days. In the example match Liverpool--Manchester United (Figure~\ref{fig:a0}) the median lowest price goes from \eur 324 (14--21 days) to \eur 358 (0--2 days).
@@ -101,7 +101,7 @@ Parquet + DuckDB & 5 & 0.39 & 10.8 & yes & no & no \\
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.64\textwidth]{a0_example_match.png}
+\includegraphics[width=0.48\textwidth]{a0_example_match.png}
 \caption{Example match Liverpool--Manchester United (North West derby): lowest asking price without fees on every pre-kickoff day.}
 \label{fig:a0}
 \end{figure}
@@ -167,8 +167,8 @@ Matches & 94 & 92 \\
 \end{table}
 
 \subsection*{A5 Seat categories (secondary)}
-\obs The median category price 14--21 days before kickoff is \eur 547 for premium seats, \eur 344 on the side and \eur 288 behind the goal. At 0--2 days their index is 86, 93 and 90. Corner seats (4 matches) end at 110.
-\interp Premium seats cost most, but the three main groups all end below their earlier level, so the drop is not limited to one type of seat. It is smaller than in A1 because a category price averages all its listings.
+\obs The median category price 14--21 days before kickoff is \eur 547 for premium seats, \eur 344 on the side and \eur 288 behind the goal. At 0--2 days their index is 86, 93 and 90; away sections (23 matches) end at 83. Corner seats (4 matches) end at 110.
+\interp Premium seats cost most, but all main groups end below their earlier level by a similar amount: we find no sign that premium seats fall more than the away end. The drop is smaller than in A1 because a category price averages all its listings.
 
 \subsection*{A6 Robustness}
 \obs The 0--2 day drop is $-22.4$\% with fees included, $-24.2$\% without the top 1\% prices and $-24.3$\% with all pre-kickoff days. In that full window, prices more than 21 days before kickoff are 14.6\% above the 14--21 day level.
@@ -177,7 +177,7 @@ Matches & 94 & 92 \\
 \section{Limitations}
 \begin{itemize}
 \item Asking prices on one platform, with no transactions and no listing IDs: we cannot tell whether the lowest price falls because sellers cut prices, cheaper tickets are listed or expensive ones leave. Other resale sites and official exchanges are not covered.
-\item One snapshot per day, between about 05:00 and 21:00 UTC; 03.10 is missing. The interrupted 06.10 run (05:53 UTC) was redone at 06:19 and its 49 pages were deleted. 28 pages of a partial, unlogged 22.10 run (08:07 UTC) duplicate the logged 21:04 run and are not parsed. No snapshot day is lost.
+\item One snapshot per day, between about 05:00 and 21:00 UTC; 03.10 is missing. The interrupted 06.10 run (05:53 UTC) was redone at 06:19 and its 49 pages were deleted. 28 pages of a partial, unlogged 22.10 run (08:07 UTC) duplicate the logged 21:04 run and are not parsed. Neither incident loses a snapshot day.
 \item Seat categories describe 50.7\% of the listed tickets. Ranks at kickoff ignore LaLiga's head-to-head tie-break, but our rebuilt tables match all six saved standings files.
 \item A4 rests on 94 matches (12 on weekdays, 6 derbies) with $R^2=0.17$. Thin markets can set a match's price level: Hull City--Brighton had 4 tickets at \eur 1,500 for six days.
 \end{itemize}
@@ -198,6 +198,7 @@ Empty reference files (R2) & Face values dropped; seat groups mapped automatical
 Database, redundancy (R2) & SQLite with 5 normalised tables; foreign key claim corrected (434 = 177 + 257, 0 orphans). \\
 No data exploration (R2) & A0: coverage table and one example match. \\
 Listing IDs (R2, question 8) & There are none; tickets listed are read as listed supply only. \\
+Round 1 plan: weekly standings, fee-included price & Ranks rebuilt from results (standings saved only 3 times); base price as main measure (fee rose from 1.30 to 1.35 on 04.11). \\
 \bottomrule
 \end{tabular}
 
