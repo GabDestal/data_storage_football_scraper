@@ -124,6 +124,9 @@ Automatic, no stadium-by-stadium manual mapping:
 | A4 | Price level between matches: median lowest price 7–14 days before vs league, best rank, rank gap, weekend, derby; one simple OLS with HC1 SE. Main factors: league + team rank; derby and weekend secondary. | what explains differences |
 | A5 | Seat tiers: median category price by tier by day (secondary, with the coverage caveat) | seat types |
 | A6 | Robustness: base price vs fees included, without top 1%, each league alone, full window vs 21 days | credibility |
+| A7 | A1's FE model with a day bin × top-4-team interaction (presentation extra) | does the drop depend on the teams |
+| A8 | Day of each match's lowest daily price in the last 21 days (presentation extra) | when is it cheapest |
+| A9 | 5 most / 5 least expensive matches, with listed tickets (presentation extra) | makes A4 concrete |
 
 Final results (`results/summary.txt`, 1,907 snapshots, 95 matches): the lowest price is **23% lower at 0–2 days** than at 14–21 days (95% CI −29% to −17%; PL −29%, LaLiga −16%), −13% at 3–6 days, −5% at 7–13 days. Weekend matches are about 33% more expensive (A4, 94 matches, p = 0.002). The October preliminary results (−19%, PL −27%, LaLiga −9%; weekend +40%) hold in direction. The weekend association is the only one robust to dropping the top 1% prices; best rank and derby (p ≈ 0.07 without them) depend on a few extreme matches (El Clásico, Hull City–Brighton).
 
