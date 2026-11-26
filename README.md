@@ -17,7 +17,7 @@ Run the scripts in this order. Scripts marked *(to do)* are not in the repositor
 | 3 | `parse.py` | raw pages + scrape log | `data/events_v0.csv`, `data/categories_v0.csv` |
 | 4 | `clean_data.py` | `*_v0.csv`, `matches.csv` | `data/clean/`: all rows with flags, pre-match rows, `quality_summary.json` (rows flagged, never deleted) |
 | 5 | `map_categories.py` | categories | `data/reference/seat_category_map.csv` |
-| 6 | `features.py` *(to do)* | matches, results, `derbies.csv` | match features (ranks, derby, weekend, kickoff hour) |
+| 6 | `features.py` | `matches.csv`, season results, `derbies.csv` | `data/clean/match_features.csv`: rank at kickoff (rebuilt from results), rank gap, derby, weekend, kickoff hour |
 | 7 | `store.py` | clean data, `matches.csv`, standings JSON, `seat_category_map.csv` | `football.db` (SQLite, 5 tables: `matches`, `standings`, `event_snapshots`, `seat_categories`, `category_snapshots`) |
 | 7b | `compare_storage.py` | `football.db`, clean CSVs | `data/parquet/*.parquet`, `results/tables/storage_comparison.csv` |
 | 8 | `analysis.py` *(to do)* | `football.db` | `results/figures/`, `results/tables/` |
