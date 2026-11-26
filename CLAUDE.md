@@ -39,8 +39,8 @@ parse.py          → data/events_v0.csv, data/categories_v0.csv
 clean_data.py     → data/clean/{events,categories}_all_clean.csv (flags), *_pre_match.csv, quality_summary.json
 map_categories.py → data/reference/seat_category_map.csv  (label → tier, automatic keyword rules)
 features.py       → data/clean/match_features.csv: ranks at kickoff (rebuilt from season results; matches all 6 saved standings files exactly), rank gap, derby, weekend, kickoff hour (league local time)
-store.py          → football.db (SQLite)
-analysis.py       → results/figures/a*.png, results/tables/a*.csv, results/summary.txt (reads football.db + data/clean/match_features.csv)
+store.py          → football.db (SQLite; match features stored in the matches table)
+analysis.py       → results/figures/a*.png, results/tables/a*.csv, results/summary.txt (reads football.db only)
 ```
 `config.py` holds the settings: competitions PL and PD, kickoff window 17.10–23.11.2026, platform ticombo.fr, user-agent, delays.
 

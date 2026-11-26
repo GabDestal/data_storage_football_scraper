@@ -52,9 +52,9 @@ The football-data.org files are already in `data/raw/football_data/`, so `get_ma
 | 4 | `clean_data.py` | `*_v0.csv`, `matches.csv` | `data/clean/`: every row with flags, pre-match rows, `quality_summary.json` |
 | 5 | `map_categories.py` | `categories_v0.csv` | `data/reference/seat_category_map.csv` |
 | 6 | `features.py` | `matches.csv`, season results, `derbies.csv` | `data/clean/match_features.csv` |
-| 7 | `store.py` | clean data, `matches.csv`, standings, seat map | `football.db` (SQLite, 5 tables) |
+| 7 | `store.py` | clean data, `matches.csv`, `match_features.csv`, standings, seat map | `football.db` (SQLite, 5 tables; match features stored in `matches`) |
 | 7b | `compare_storage.py` | `football.db`, clean CSVs | `data/parquet/`, `results/tables/storage_comparison.csv` |
-| 8 | `analysis.py` | `football.db`, `match_features.csv` | `results/figures/` (7 charts), `results/tables/` (13 tables), `results/summary.txt` (one observation + one interpretation line per result) |
+| 8 | `analysis.py` | `football.db` | `results/figures/` (9 charts), `results/tables/` (15 tables), `results/summary.txt` (one observation + one interpretation line per result) |
 
 During collection, `scrape.py` ran once a day (cron: `0 11 * * * cd /path/to/project && python3 scrape.py`).
 
