@@ -90,7 +90,7 @@ Categories (`categories_*.csv`): `category` (raw label), `averagePrice`, `availa
 - Category totals **don't match** match totals: categories cover about 37% of listed tickets.
   - 191 raw labels across about 40 stadiums, so categories stay a **secondary** analysis.
 - Some matches have days with no listings (0 tickets). The page can still show an old "from" price, so `flag_no_listings` is based on tickets, not on a missing price. Exclude them from price analyses and keep them for supply. Two LaLiga matches (564717, 564733) never had listings before kickoff.
-- Cleaning result (`data/clean/quality_summary.json`): 5,435 event rows, 2,068 post-kickoff, 0 duplicate days, 0 kickoff mismatches → 3,367 pre-match rows (97 matches); 124 no-listing, 16 inconsistent fee → 3,227 price rows (95 matches), 1,907 of them in the 21-day window. Top 1% threshold: €1,166.62 (33 rows).
+- Cleaning result (`data/clean/quality_summary.json`): 5,435 event rows, 2,068 post-kickoff, 0 duplicate days, 0 kickoff mismatches → 3,367 pre-match rows (97 matches); 124 no-listing, 16 inconsistent fee → 3,227 price rows (95 matches), 1,907 of them in the 21-day window. Top 1% threshold on the base price: €897.40 (33 rows, 5 matches; 22 of the rows are El Clásico).
 - LaLiga kickoff times were placeholders (00:00) in the 20.10 run, with 9 matches more than 1 h off Ticombo (2 by more than a day). Fixed by the final 24.11 `get_matches.py` run: 10 kickoffs updated, 0 at 00:00, 0 mismatches with Ticombo.
 - All CSVs are written in `utf-8-sig` so Excel shows accents correctly. The data itself is fine UTF-8; a "�" seen in a terminal is a display issue only.
 - Extreme prices exist: maximums up to about €31,000, category averages above €10,000.
