@@ -61,8 +61,8 @@ analysis.py       → results/figures/*.png, results/tables/*.csv, results/summa
 
 | Field | Meaning |
 |---|---|
-| `listing_startPrice` | lowest asking price, without fees |
-| `listing_finalStartPrice` | lowest asking price, fees included. Usually 1.30 × `listing_startPrice`. From 04.11, 203 pre-match rows show about 1.35 (looks like a fee increase; kept, `flag_fee_above_30`). 16 rows are outside 1.30–1.35 (ratio 0.09–1.25) and excluded from price analyses (`flag_fee_inconsistent`). Because of the fee change, the base-price robustness check (A6) matters. Every pre-kickoff row has both prices; rows with only the final price are post-kickoff or no-listing pages. **Main price measure.** |
+| `listing_startPrice` | lowest asking price, without fees. **Main price measure.** |
+| `listing_finalStartPrice` | lowest asking price, fees included. Usually 1.30 × `listing_startPrice`. From 04.11, 203 pre-match rows show about 1.35 (looks like a fee increase; kept, `flag_fee_above_30`). 16 rows are outside 1.30–1.35 (ratio 0.09–1.25) and excluded from price analyses (`flag_fee_inconsistent`). Because of this fee change (25 matches), it would distort the trends, so it is only used as a robustness check (A6). Every pre-kickoff row has both prices; rows with only the final price are post-kickoff or no-listing pages. |
 | `listing_avgPrice`, `listing_maxPrice` | average and maximum. Distorted by extreme listings, so don't use as main measures. |
 | `listing_availableTickets` | tickets listed. Treat as **listed supply**, not demand. |
 | `event_kickoff_platform` / `kickoff_utc_reference` | kickoff according to Ticombo / football-data |
@@ -73,7 +73,7 @@ Categories (`categories_*.csv`): `category` (raw label), `averagePrice`, `availa
 
 ## Locked decisions
 
-1. **Price measure:** `listing_finalStartPrice`, the lowest price with fees. The base price is used only as a robustness check.
+1. **Price measure:** `listing_startPrice`, the lowest price without fees. The fees go from 1.30x to 1.35x on 04.11 for 25 matches, which would distort the trends, so the fee-included price (`listing_finalStartPrice`) is used only as a robustness check.
 2. **One snapshot per match per calendar day.** If there are two, keep the latest; the interrupted 06.10 run left duplicates.
 3. **Pre-kickoff snapshots only.** After the peer-review fix, the scraper kept collecting until 24.11, including matches already played.
 4. **Kickoff rule:** exclude a match only if the Ticombo and football-data kickoffs differ by **more than 1 day** after the final refresh. Gaps of a few hours are placeholder times, so keep them. The old rule (any mismatch) dropped 9 whole LaLiga matches, which was too aggressive.
@@ -81,7 +81,7 @@ Categories (`categories_*.csv`): `category` (raw label), `averagePrice`, `availa
 6. **Extreme prices** are flagged but kept, and handled through robustness checks (without the top 1%).
 7. **Face values and markup are dropped.** The reference file was never filled, face values are ranges, and the question doesn't need them.
 8. **Standings:** each team's rank at kickoff is recomputed in `features.py` from the official results of matches played *before* that kickoff (`data/raw/football_data/<date>_season_{PL,PD}.json`, from `get_season_results.py`), never later information. Replaces the planned weekly standings refreshes, which were only saved 3 times.
-9. **Storage:** SQLite with 4 normalised tables (`matches`, `standings`, `event_snapshots`, `category_snapshots`), with primary and foreign keys and no repeated match columns. The report compares it with CSV and with Parquet + DuckDB.
+9. **Storage:** SQLite with 5 normalised tables (`matches`, `standings`, `event_snapshots`, `seat_categories`, `category_snapshots`), with primary and foreign keys and no repeated match columns. The report compares it with CSV and with Parquet + DuckDB.
 
 ## Known data issues (document them, don't hide them)
 
