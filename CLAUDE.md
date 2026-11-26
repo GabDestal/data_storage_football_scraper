@@ -62,7 +62,7 @@ analysis.py       → results/figures/a*.png, results/tables/a*.csv, results/sum
 | Field | Meaning |
 |---|---|
 | `listing_startPrice` | lowest asking price, without fees. **Main price measure.** |
-| `listing_finalStartPrice` | lowest asking price, fees included. Usually 1.30 × `listing_startPrice`. From 04.11, 203 pre-match rows show about 1.35 (looks like a fee increase; kept, `flag_fee_above_30`). 16 rows are outside 1.30–1.35 (ratio 0.09–1.25) and excluded from price analyses (`flag_fee_inconsistent`). Because of this fee change (25 matches), it would distort the trends, so it is only used as a robustness check (A6). Every pre-kickoff row has both prices; rows with only the final price are post-kickoff or no-listing pages. |
+| `listing_finalStartPrice` | lowest asking price, fees included. Usually 1.30 × `listing_startPrice`. From 04.11, 203 pre-match rows show about 1.35 (looks like a fee increase; kept, `flag_fee_above_30`). 16 rows are outside 1.30–1.35 (ratio 0.09–1.25) and excluded from price analyses (`flag_fee_inconsistent`). Because of this fee change (27 matches), it would distort the trends, so it is only used as a robustness check (A6). Every pre-kickoff row has both prices; rows with only the final price are post-kickoff or no-listing pages. |
 | `listing_avgPrice`, `listing_maxPrice` | average and maximum. Distorted by extreme listings, so don't use as main measures. |
 | `listing_availableTickets` | tickets listed. Treat as **listed supply**, not demand. |
 | `event_kickoff_platform` / `kickoff_utc_reference` | kickoff according to Ticombo / football-data |
@@ -73,7 +73,7 @@ Categories (`categories_*.csv`): `category` (raw label), `averagePrice`, `availa
 
 ## Locked decisions
 
-1. **Price measure:** `listing_startPrice`, the lowest price without fees. The fees go from 1.30x to 1.35x on 04.11 for 25 matches, which would distort the trends, so the fee-included price (`listing_finalStartPrice`) is used only as a robustness check.
+1. **Price measure:** `listing_startPrice`, the lowest price without fees. The fees go from 1.30x to 1.35x on 04.11 for 27 matches, which would distort the trends, so the fee-included price (`listing_finalStartPrice`) is used only as a robustness check.
 2. **One snapshot per match per calendar day.** If there are two, keep the latest. The 06.10 run was interrupted (05:53 UTC) and redone at 06:19; the 49 pages of the interrupted run were deleted, so the final data has 0 duplicate days.
 3. **Pre-kickoff snapshots only.** After the peer-review fix, the scraper kept collecting until 24.11, including matches already played.
 4. **Kickoff rule:** exclude a match only if the Ticombo and football-data kickoffs differ by **more than 1 day** after the final refresh. Gaps of a few hours are placeholder times, so keep them. The old rule (any mismatch) dropped 9 whole LaLiga matches, which was too aggressive.
