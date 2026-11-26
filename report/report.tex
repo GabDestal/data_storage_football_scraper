@@ -70,7 +70,7 @@ Snapshots with a usable price & 3,227 & 95 \\
 
 \section{Storage}
 
-The clean data is stored in one SQLite file (\texttt{football.db}) with five normalised tables: \texttt{matches} (100 rows), \texttt{standings} (120), \texttt{event\_snapshots} (5,435), \texttt{seat\_categories} (230) and \texttt{category\_snapshots} (26,060). Primary keys are the natural keys; foreign keys link snapshots to matches and category rows to snapshots. Match information and seat groups are stored once, so they cannot become inconsistent. Flags are 0/1 columns the analysis filters on.
+The clean data is stored in one SQLite file (\texttt{football.db}) with five normalised tables: \texttt{matches} (100 rows), \texttt{standings} (120), \texttt{event\_snapshots} (5,435), \texttt{seat\_categories} (230) and \texttt{category\_snapshots} (26,060). Primary keys are the natural keys; foreign keys link snapshots to matches and category rows to snapshots. Match information, match features (ranks at kickoff, derby, weekend) and seat groups are stored once, so they cannot become inconsistent. Flags are 0/1 columns the analysis filters on.
 
 Table~\ref{tab:storage} compares three formats on the same query (average lowest price per league and day in the 21-day window). All three return the same result. At our size every format is fast. We chose SQLite because it enforces types and keys in a single file that every group member can query. Parquet is the smallest and would suit a much larger, read-only dataset.
 
