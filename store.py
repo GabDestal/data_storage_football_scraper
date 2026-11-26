@@ -1,6 +1,6 @@
 #Step 7: store the clean data in one SQLite database (football.db).
 
-#Input : data/reference/matches.csv
+#Input : data/reference/matches.csv, data/clean/match_features.csv (from features.py)
 #        data/raw/football_data/<date>_standings_{PL,PD}.json
 #        data/clean/events_all_clean.csv, data/clean/categories_all_clean.csv
 #        data/reference/seat_category_map.csv (from map_categories.py)
@@ -44,7 +44,20 @@ CREATE TABLE matches (
     kickoff_utc  TEXT NOT NULL,         -- final kickoff from football-data (24.11 refresh)
     home_team    TEXT NOT NULL,
     away_team    TEXT NOT NULL,
-    event_uuid   TEXT                   -- Ticombo event ID, NULL if the match was never found
+    event_uuid   TEXT,                  -- Ticombo event ID, NULL if the match was never found
+    -- match features from features.py (one value per match, so they belong here)
+    home_rank           INTEGER,        -- rank at kickoff, from results played before kickoff
+    away_rank           INTEGER,
+    best_rank           INTEGER,        -- rank of the better of the two teams
+    rank_gap            INTEGER,
+    home_points         INTEGER,
+    away_points         INTEGER,
+    games_played_before INTEGER,
+    derby               INTEGER NOT NULL,  -- 0/1, from data/reference/derbies.csv
+    derby_name          TEXT,
+    weekend             INTEGER NOT NULL,  -- 0/1
+    kickoff_weekday     TEXT,
+    kickoff_hour_local  INTEGER
 );
 
 CREATE TABLE standings (
@@ -119,6 +132,13 @@ events = pd.read_csv("data/clean/events_all_clean.csv", encoding="utf-8-sig")
 # the Ticombo event ID is the same on every snapshot of a match -> store it once, here
 uuid = events.groupby("match_id")["event_uuid"].first().reset_index()
 matches = matches.merge(uuid, on="match_id", how="left")
+# match features (ranks at kickoff, derby, weekend) are one value per match: store them in
+# `matches` instead of a separate CSV, so the analysis reads everything from one database
+features = pd.read_csv("data/clean/match_features.csv", encoding="utf-8-sig")
+assert set(features["match_id"]) == set(matches["match_id"]), "features.py must cover every match"
+for col in ["derby", "weekend"]:
+    features[col] = features[col].astype(int)   # True/False -> 1/0, like the flags
+matches = matches.merge(features, on="match_id", how="left")
 matches.to_sql("matches", con, if_exists="append", index=False)
 
 # --- 3. standings: one row per team, for every dated standings file ---
