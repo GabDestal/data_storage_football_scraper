@@ -20,7 +20,7 @@ Details of every cleaning rule and count: `data/clean/quality_summary.json`.
 The collection can't be repeated (each day's prices are gone the next day), so we keep every raw page and the pipeline reruns from them. Every output below is rebuilt by a script; nothing is edited by hand.
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements.txt   # Python 3.12, exact package versions (pandas 2.2.3)
 
 # 1. get the raw pages (1.06 GB unzipped)
 git lfs pull                      # only needed if data/raw/raw_zip_file.zip is a few bytes
