@@ -125,7 +125,7 @@ Automatic, no stadium-by-stadium manual mapping:
 | A5 | Seat tiers: median category price by tier by day (secondary, with the coverage caveat) | seat types |
 | A6 | Robustness: base price vs fees included, without top 1%, each league alone, full window vs 21 days | credibility |
 
-Final results (`results/summary.txt`, 1,907 snapshots, 95 matches): the lowest price is **23% lower at 0–2 days** than at 14–21 days (95% CI −29% to −17%; PL −29%, LaLiga −16%), −13% at 3–6 days, −5% at 7–13 days. Weekend matches are about 33% more expensive (A4, 94 matches, p = 0.002). The October preliminary results (−19%, PL −27%, LaLiga −9%; weekend +40%) hold in direction. Without the top 1% prices the rank and derby associations weaken (p ≈ 0.07); the weekend one does not.
+Final results (`results/summary.txt`, 1,907 snapshots, 95 matches): the lowest price is **23% lower at 0–2 days** than at 14–21 days (95% CI −29% to −17%; PL −29%, LaLiga −16%), −13% at 3–6 days, −5% at 7–13 days. Weekend matches are about 33% more expensive (A4, 94 matches, p = 0.002). The October preliminary results (−19%, PL −27%, LaLiga −9%; weekend +40%) hold in direction. The weekend association is the only one robust to dropping the top 1% prices; best rank and derby (p ≈ 0.07 without them) depend on a few extreme matches (El Clásico, Hull City–Brighton).
 
 `data/reference/derbies.csv` holds the hand-made derby list. Definition: same city, plus El Clásico, Liverpool–Man United and the Basque derby (Athletic–Real Sociedad). 26 pairs (`team_a`, `team_b`, `competition`, `derby_type`, `derby_name`), names exactly as in `matches.csv`. 6 of our 100 matches are derbies. Not included (borderline, group to decide): Getafe vs Madrid clubs, Celta–Deportivo, Newcastle–Sunderland.
 

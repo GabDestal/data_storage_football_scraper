@@ -433,8 +433,9 @@ def a4_between(price, features):
         "Interpretation: matches involving a team high in the table, weekend matches and derbies are "
         "associated with higher asking prices, while the league itself adds little once these are taken "
         "into account. These are descriptive associations, not causal effects: there are few weekday "
-        "matches and derbies, most of the variation stays unexplained, and the rank and derby results "
-        "weaken without the few extreme matches (A6), so the weekend association is the most robust one.",
+        "matches and derbies, and most of the variation stays unexplained. The weekend association is "
+        "the only one that survives dropping the top 1% prices (A6); the best-rank and derby "
+        "associations depend on a few extreme matches.",
         ""]
 
 
@@ -531,8 +532,9 @@ def a6_robustness(window, price, features):
         f"Interpretation: the drop in the last days keeps the same sign whatever the price measure, the "
         f"extreme prices or the window (between {last['pct_change'].max():.0f}% and "
         f"{last['pct_change'].min():.0f}%, the leagues being the two ends), so the main result does not "
-        "depend on these choices. Between matches, only the weekend association is as clear without the "
-        "extreme prices; the rank and derby associations lean partly on a few very expensive matches.",
+        f"depend on these choices. Between matches (A4), the weekend association is the only one that "
+        f"survives dropping the top 1%; best rank and derby depend on a few extreme matches "
+        f"({dropped_names}).",
         ""]
 
 
