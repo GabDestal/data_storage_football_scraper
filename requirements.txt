@@ -1,7 +1,13 @@
-requests
-beautifulsoup4
-pandas
-matplotlib
-statsmodels
-duckdb
-pyarrow
+# Tested with Python 3.12. Exact versions so every group member gets the same results.
+# pandas 3 changes the type of text columns; with an old patsy (< 1.0) the statsmodels
+# regressions then fail ("Cannot interpret StringDtype as a data type"), so we stay on pandas 2.
+requests==2.32.3
+beautifulsoup4==4.12.3
+pandas==2.2.3
+numpy==2.1.1
+matplotlib==3.10.0
+statsmodels==0.14.6
+patsy==1.0.1
+scipy==1.15.2
+duckdb==1.4.1
+pyarrow==21.0.0
