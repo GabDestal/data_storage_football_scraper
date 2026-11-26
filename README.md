@@ -18,7 +18,8 @@ Run the scripts in this order. Scripts marked *(to do)* are not in the repositor
 | 4 | `clean_data.py` | `*_v0.csv`, `matches.csv` | `data/clean/`: all rows with flags, pre-match rows, `quality_summary.json` (rows flagged, never deleted) |
 | 5 | `map_categories.py` | categories | `data/reference/seat_category_map.csv` |
 | 6 | `features.py` *(to do)* | matches, results, `derbies.csv` | match features (ranks, derby, weekend, kickoff hour) |
-| 7 | `store.py` *(to do)* | clean data + reference tables | `football.db` (SQLite) |
+| 7 | `store.py` | clean data, `matches.csv`, standings JSON, `seat_category_map.csv` | `football.db` (SQLite, 5 tables: `matches`, `standings`, `event_snapshots`, `seat_categories`, `category_snapshots`) |
+| 7b | `compare_storage.py` | `football.db`, clean CSVs | `data/parquet/*.parquet`, `results/tables/storage_comparison.csv` |
 | 8 | `analysis.py` *(to do)* | `football.db` | `results/figures/`, `results/tables/` |
 
 ## How to reproduce
@@ -34,6 +35,7 @@ python clean_data.py
 python map_categories.py
 python features.py
 python store.py
+python compare_storage.py         # optional: CSV vs SQLite vs Parquet + DuckDB (report, Storage section)
 python analysis.py
 ```
 
