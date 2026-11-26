@@ -1,0 +1,11 @@
+group,match,competition,price,tickets,best_rank,rank_gap,weekend,derby
+most expensive,Hull City AFC - Brighton & Hove Albion FC,PL,1500.0,4.0,2,12,1,0
+most expensive,FC Barcelona - Real Madrid CF,PD,1000.0,676.0,1,2,1,1
+most expensive,AFC Bournemouth - Leeds United FC,PL,605.0,4.0,7,6,1,0
+most expensive,Real Racing Club de Santander - Real Madrid CF,PD,546.3,34.0,3,13,1,0
+most expensive,Chelsea FC - Manchester United FC,PL,375.4,1458.0,5,11,1,0
+least expensive,Real Sociedad de Fútbol - Levante UD,PD,36.6,174.0,5,9,1,0
+least expensive,Manchester City FC - Brighton & Hove Albion FC,PL,41.7,1976.0,1,2,1,0
+least expensive,Manchester City FC - Fulham FC,PL,41.9,2013.0,3,12,1,0
+least expensive,Manchester City FC - Ipswich Town FC,PL,50.0,1945.0,1,9,1,0
+least expensive,Deportivo Alavés - Málaga CF,PD,50.5,41.0,7,13,0,0

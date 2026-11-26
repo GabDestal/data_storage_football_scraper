@@ -538,6 +538,166 @@ def a6_robustness(window, price, features):
         ""]
 
 
+# ---------------------------------------------------------------- A7: does the drop depend on the teams?
+
+def a7_top_team_drop(window, features):
+    """A1's FE model with an interaction: is the late drop different for matches with a top-4 team?
+    The match dummies already absorb each match's price level (so 'top 4' alone is not in the
+    model); the interaction measures whether the WITHIN-match drop differs."""
+    df = window.merge(features[["match_id", "best_rank"]], on="match_id", how="left")
+    df["top4"] = (df["best_rank"] <= 4).astype(int)  # same cut as the A4 rank groups
+    df["log_price"] = np.log(df["listing_startPrice"])
+    # interaction dummies written out by hand, with 14-21 days as reference (a 14-21 x top4 term
+    # would be the same as the match dummies of the top-4 matches, so it must be left out)
+    names = {"7-13": "top4_7_13", "3-6": "top4_3_6", "0-2": "top4_0_2"}
+    for b, name in names.items():
+        df[name] = ((df["bin"] == b) & (df["top4"] == 1)).astype(int)
+    fit = smf.ols("log_price ~ C(bin, Treatment('14-21')) + " + " + ".join(names.values())
+                  + " + C(match_id)", data=df).fit(cov_type="cluster", cov_kwds={"groups": df["match_id"]})
+    rows = []
+    for b in ["7-13", "3-6", "0-2"]:
+        base = fit.params[f"C(bin, Treatment('14-21'))[T.{b}]"]
+        inter = names[b]
+        rows.append({"bin": b,
+                     "pct_change_other": 100 * (np.exp(base) - 1),
+                     "pct_change_top4": 100 * (np.exp(base + fit.params[inter]) - 1),
+                     "interaction_log": fit.params[inter], "interaction_p": fit.pvalues[inter]})
+    out = pd.DataFrame(rows)
+    n_top4 = df.loc[df["top4"] == 1, "match_id"].nunique()
+    out["matches_top4"] = n_top4
+    out["matches_other"] = df["match_id"].nunique() - n_top4
+    out.round(4).to_csv("results/tables/a7_drop_by_top4.csv", index=False)
+
+    last = out.set_index("bin").loc["0-2"]
+    return [
+        "A7 - Does the drop depend on the teams? (match with a top-4 team at kickoff vs others)",
+        f"Observation: same FE model as A1 with a 'day bin x top-4 team' interaction ({n_top4} matches with a "
+        f"top-4 team, {out['matches_other'].iloc[0]} others): at 0-2 days the lowest price is "
+        f"{pct(last['pct_change_top4'])} for matches with a top-4 team and {pct(last['pct_change_other'])} for "
+        f"the others, compared with 14-21 days before (difference p = {last['interaction_p']:.2f}).",
+        "Interpretation: "
+        + ("the late drop is clearly different for matches with a top-4 team. "
+           if last["interaction_p"] < 0.05 else
+           "we cannot say the late drop differs between matches with and without a top-4 team: the "
+           "difference is not statistically clear with this number of matches. ")
+        + "A smaller drop for big-club matches would fit sellers being able to wait for buyers, but these "
+        "are associations between asking prices, not causal effects.",
+        ""]
+
+
+# ---------------------------------------------------------------- A8: when is the lowest price reached?
+
+def a8_lowest_day(window):
+    """For each match, the day (in the last 21 days) with the lowest asking price, and how far
+    below its 14-21 day level that minimum is. One snapshot per day, so this is the cheapest
+    DAILY snapshot, not the cheapest moment."""
+    idx = index_to_base(window, "listing_startPrice")
+    # the lowest snapshot of each match (if two days tie, keep the one closest to kickoff)
+    low = (idx.sort_values(["match_id", "listing_startPrice", "day"])
+              .groupby("match_id").first().reset_index())
+    low["bin"] = pd.cut(low["day"], [-1, 2, 6, 13, 21], labels=["0-2", "3-6", "7-13", "14-21"])
+    table = (low.groupby("bin", observed=False)
+                .agg(n_matches=("match_id", "size"), median_index_at_low=("index", "median"))
+                .reset_index())
+    table["share_pct"] = (100 * table["n_matches"] / len(low)).round(1)
+    table.to_csv("results/tables/a8_lowest_price_day.csv", index=False)
+
+    # chart: number of matches reaching their lowest price on each day, stacked by league
+    counts = low.groupby(["day", "competition"]).size().unstack(fill_value=0).reindex(range(22), fill_value=0)
+    fig, ax = plt.subplots(figsize=(7, 4))
+    bottom = np.zeros(len(counts))
+    for comp in ["PL", "PD"]:
+        vals = counts[comp].values if comp in counts else np.zeros(len(counts))
+        ax.bar(counts.index, vals, bottom=bottom, color=COLORS[comp], label=LEAGUES[comp], width=0.8)
+        bottom += vals
+    ax.set_xlim(21.5, -0.5)  # inverted: kickoff on the right, like the other charts
+    ax.set_xticks(range(20, -1, -2))
+    ax.set_xlabel("Days before kickoff")
+    ax.set_ylabel("Number of matches")
+    ax.set_title("Day on which each match had its lowest asking price (last 21 days)")
+    ax.legend(frameon=False)
+    fig.savefig("results/figures/a8_lowest_price_day.png")
+    plt.close(fig)
+
+    t = table.set_index("bin")
+    by_league = low.groupby("competition")["day"].median()
+    return [
+        "A8 - When is the lowest price reached? (last 21 days, one snapshot per day)",
+        f"Observation: of {len(low)} matches, {t.loc['0-2', 'share_pct']:.0f}% have their lowest daily asking "
+        f"price 0-2 days before kickoff, {t.loc['3-6', 'share_pct']:.0f}% at 3-6 days, "
+        f"{t.loc['7-13', 'share_pct']:.0f}% at 7-13 days and {t.loc['14-21', 'share_pct']:.0f}% at 14-21 days. "
+        f"Median number of days before kickoff of the lowest price: {low['day'].median():.0f} "
+        f"(Premier League {by_league['PL']:.0f}, LaLiga {by_league['PD']:.0f}). On its lowest day the price is "
+        f"at a median index of {low['index'].median():.0f} (14-21 days = 100).",
+        "Interpretation: for most matches the cheapest asking price comes in the last days before kickoff, "
+        "consistent with A1, but about one match in five is cheapest 1-3 weeks before. Waiting is usually "
+        "but not always cheaper, and the lowest price may be a single listing that does not last.",
+        ""]
+
+
+# ---------------------------------------------------------------- A9: most and least expensive matches
+
+def a9_extremes(price, features):
+    """The 5 most and 5 least expensive matches, on the A4 price level (median lowest price
+    7-14 days before kickoff). Makes the A4 associations concrete."""
+    df, _ = a4_model(price, features)
+    df["match"] = df["home_team"] + " - " + df["away_team"]
+    # listed supply over the same 7-14 days, to see whether cheap matches simply have many tickets
+    tickets = (price[(price["days_to_kickoff_exact"] >= 7) & (price["days_to_kickoff_exact"] <= 14)]
+               .groupby("match_id")["listing_availableTickets"].median().rename("tickets"))
+    df = df.merge(tickets, left_on="match_id", right_index=True, how="left")
+    top = df.nlargest(5, "price").assign(group="most expensive")
+    bottom = df.nsmallest(5, "price").assign(group="least expensive")
+    both = pd.concat([top, bottom])
+    cols = ["group", "match", "competition", "price", "tickets", "best_rank", "rank_gap", "weekend", "derby"]
+    both[cols].round(1).to_csv("results/tables/a9_most_least_expensive.csv", index=False)
+
+    # chart: horizontal bars, most expensive at the top, league colours
+    plot = pd.concat([top, bottom.iloc[::-1]]).iloc[::-1]
+    fig, ax = plt.subplots(figsize=(7, 4.5))
+    ax.barh(plot["match"], plot["price"], color=[COLORS[c] for c in plot["competition"]])
+    ax.set_xscale("log")  # El Clasico would flatten every other bar on a linear scale
+    ax.set_xticks([25, 50, 100, 250, 500, 1000])
+    ax.set_xticklabels(["25", "50", "100", "250", "500", "1,000"])
+    ax.axhline(4.5, color="grey", lw=0.8, linestyle="--")  # between the two groups
+    handles = [matplotlib.patches.Patch(color=COLORS[c], label=LEAGUES[c]) for c in ["PL", "PD"]]
+    ax.set_xlabel("Median lowest price 7-14 days before kickoff (EUR, log scale)")
+    ax.set_title("The 5 most and 5 least expensive matches")
+    ax.legend(handles=handles, frameon=False, loc="lower right")
+    ax.grid(axis="y", visible=False)
+    fig.savefig("results/figures/a9_most_least_expensive.png")
+    plt.close(fig)
+
+    def describe(d):
+        return "; ".join(f"{r['match']} EUR {r['price']:.0f}" for _, r in d.iterrows())
+    return [
+        "A9 - Most and least expensive matches (median lowest price 7-14 days before kickoff)",
+        f"Observation: most expensive: {describe(top)}. Least expensive: {describe(bottom)}.",
+        f"Observation: derbies: {int(top['derby'].sum())} of the 5 most expensive, {int(bottom['derby'].sum())} of "
+        f"the 5 cheapest; weekend: {int(top['weekend'].sum())} vs {int(bottom['weekend'].sum())}; median best "
+        f"rank of the two teams: {top['best_rank'].median():.0f} vs {bottom['best_rank'].median():.0f}. "
+        f"{home_team_note(bottom, df)}",
+        f"Observation: median tickets listed 7-14 days before: {top['tickets'].median():,.0f} for the 5 most "
+        f"expensive, {bottom['tickets'].median():,.0f} for the 5 cheapest, {df['tickets'].median():,.0f} for all matches.",
+        "Interpretation: team rank alone does not separate the extremes: a top team can play at both ends. "
+        "The cheapest matches have far more tickets listed, which fits a large supply of resale tickets "
+        "keeping the lowest asking price down; the most expensive one is a thin market (Hull City - Brighton "
+        "had 4 tickets at EUR 1,500 for six days, see limitations). These ten matches illustrate A4 and its "
+        "limits; they do not add evidence to it.",
+        ""]
+
+
+def home_team_note(bottom, df):
+    """Names a home team that appears several times among the cheapest matches, with its supply."""
+    counts = bottom["home_team"].value_counts()
+    if counts.iloc[0] < 2:
+        return ""
+    team = counts.index[0]
+    t = df.loc[df["home_team"] == team, "tickets"].median()
+    return (f"{team} is the home team in {counts.iloc[0]} of the 5 cheapest matches, with a median of "
+            f"{t:,.0f} tickets listed (all matches: {df['tickets'].median():.0f}).")
+
+
 # ---------------------------------------------------------------- run everything
 
 con = sqlite3.connect("football.db")
@@ -586,6 +746,10 @@ summary += a3_supply(window_pre, window)
 summary += a4_between(price, features)
 summary += a5_seats(categories)
 summary += a6_robustness(window, price, features)
+# extra analyses for the presentation
+summary += a7_top_team_drop(window, features)
+summary += a8_lowest_day(window)
+summary += a9_extremes(price, features)
 
 text = "\n".join(summary)
 # wording rule of the project: asking prices and listed supply only
