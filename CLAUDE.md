@@ -74,21 +74,21 @@ Categories (`categories_*.csv`): `category` (raw label), `averagePrice`, `availa
 ## Locked decisions
 
 1. **Price measure:** `listing_startPrice`, the lowest price without fees. The fees go from 1.30x to 1.35x on 04.11 for 25 matches, which would distort the trends, so the fee-included price (`listing_finalStartPrice`) is used only as a robustness check.
-2. **One snapshot per match per calendar day.** If there are two, keep the latest; the interrupted 06.10 run left duplicates.
+2. **One snapshot per match per calendar day.** If there are two, keep the latest. The 06.10 run was interrupted (05:53 UTC) and redone at 06:19; the 49 pages of the interrupted run were deleted, so the final data has 0 duplicate days.
 3. **Pre-kickoff snapshots only.** After the peer-review fix, the scraper kept collecting until 24.11, including matches already played.
 4. **Kickoff rule:** exclude a match only if the Ticombo and football-data kickoffs differ by **more than 1 day** after the final refresh. Gaps of a few hours are placeholder times, so keep them. The old rule (any mismatch) dropped 9 whole LaLiga matches, which was too aggressive.
 5. **Common window:** the last 21 days before kickoff, for trajectories (peer review 1). Collection started 27.09, so the 17 matches of 17–18.10 start at day 19–20 instead of 21; every price match has data in the 14–21 day bin, so each match is indexed to the median of its own 14–21 day bin (= 100), not to day −21.
 6. **Extreme prices** are flagged but kept, and handled through robustness checks (without the top 1%).
-7. **Face values and markup are dropped.** The reference file was never filled, face values are ranges, and the question doesn't need them.
+7. **Face values and markup are dropped.** The reference file was never filled (the empty `face_values.csv` was deleted; it stays in the git history), face values are ranges, and the question doesn't need them.
 8. **Standings:** each team's rank at kickoff is recomputed in `features.py` from the official results of matches played *before* that kickoff (`data/raw/football_data/<date>_season_{PL,PD}.json`, from `get_season_results.py`), never later information. Replaces the planned weekly standings refreshes, which were only saved 3 times.
 9. **Storage:** SQLite with 5 normalised tables (`matches`, `standings`, `event_snapshots`, `seat_categories`, `category_snapshots`), with primary and foreign keys and no repeated match columns. The report compares it with CSV and with Parquet + DuckDB.
 
 ## Known data issues (document them, don't hide them)
 
 - 03.10 has no snapshot (laptop off). Snapshot times vary between about 05:00 and 21:00 UTC.
-- The 06.10 run was interrupted. Its log lines point to deleted files, and `parse.py` skips them with a warning.
+- The 06.10 run was interrupted (05:53 UTC: 49 pages + 1 failed request) and redone at 06:19 for all 97 matches. The 49 log rows of the interrupted run point to deleted pages, and `parse.py` skips them with a warning (5,484 logged pages − 49 = 5,435 snapshots). 28 pages from a partial, unlogged 22.10 run (08:07 UTC, PL only) are in the zip but not in the log, so they are never parsed (5,435 + 28 = 5,463 pages); each of those matches has its logged 22.10 page (21:04 run), so no day is lost.
 - Category totals **don't match** match totals: categories describe 50.7% of the listed tickets (A0: sum of category tickets / match tickets on snapshots with a price; PL 52.5%, LaLiga 42.8%).
-  - 191 raw labels across about 40 stadiums, so categories stay a **secondary** analysis.
+  - 230 raw labels (227 in pre-match snapshots) across about 40 stadiums, so categories stay a **secondary** analysis.
 - Some matches have days with no listings (0 tickets). The page can still show an old "from" price, so `flag_no_listings` is based on tickets, not on a missing price. Exclude them from price analyses and keep them for supply. Two LaLiga matches (564717, 564733) never had listings before kickoff.
 - Cleaning result (`data/clean/quality_summary.json`): 5,435 event rows, 2,068 post-kickoff, 0 duplicate days, 0 kickoff mismatches → 3,367 pre-match rows (97 matches); 124 no-listing, 16 inconsistent fee → 3,227 price rows (95 matches), 1,907 of them in the 21-day window. Top 1% threshold on the base price: €897.40 (33 rows, 5 matches; 22 of the rows are El Clásico).
 - LaLiga kickoff times were placeholders (00:00) in the 20.10 run, with 9 matches more than 1 h off Ticombo (2 by more than a day). Fixed by the final 24.11 `get_matches.py` run: 10 kickoffs updated, 0 at 00:00, 0 mismatches with Ticombo.
@@ -160,5 +160,5 @@ Final results (`results/summary.txt`, 1,907 snapshots, 95 matches): the lowest p
 ## Repository notes
 
 - `data/raw/ticombo/` is in `.gitignore` (too large). The full raw archive is `data/raw/raw_zip_file.zip`, committed with Git LFS and also attached to the GitHub Release `raw-data-v1`. Four example pages are in `data/raw_sample/`.
-- `docs/justification.docx` is the round 1 justification document. `docs/tos_checks/` is still empty: the ToS / robots.txt screenshots must be found or retaken (with the new date stated).
+- `docs/justification.docx` is the round 1 justification document. `docs/tos_checks/` holds the ToS / robots.txt screenshots, retaken on 26.11.2026 because the originals from 27.09 were not saved (see its README). The Ticombo terms (last updated August 2026) contain no clause on robots, scrapers or automated access to the site.
 - Charts: matplotlib, one axis per chart, labelled axes, legend for 2 or more series. Use the same colours everywhere: PL `#2a78d6`, LaLiga `#eb6834`.

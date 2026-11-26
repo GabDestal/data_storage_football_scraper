@@ -40,6 +40,8 @@ python analysis.py
 
 The football-data.org files are already in `data/raw/football_data/`, so `get_matches.py` and `get_season_results.py` don't need to be rerun. They need a free API key: `FOOTBALL_DATA_TOKEN=... python get_matches.py`.
 
+**Rerun test (26.11.2026):** from a fresh clone, with Python 3.13 and pandas 3.1.1, numpy 2.5.5, statsmodels 0.15.0, matplotlib 3.11.2, duckdb 2.0.1, pyarrow 26.0.1, beautifulsoup4 4.15.0 (`analysis.py` also checked with pandas 2.3.3). Every committed output is rebuilt with the same values. Only the query times in `storage_comparison.csv` change (they depend on the machine), and `data/clean/events_*.csv` can differ in float formatting (same values).
+
 ## Pipeline
 | Step | Script | Reads | Writes |
 |---|---|---|---|
@@ -52,7 +54,7 @@ The football-data.org files are already in `data/raw/football_data/`, so `get_ma
 | 6 | `features.py` | `matches.csv`, season results, `derbies.csv` | `data/clean/match_features.csv` |
 | 7 | `store.py` | clean data, `matches.csv`, standings, seat map | `football.db` (SQLite, 5 tables) |
 | 7b | `compare_storage.py` | `football.db`, clean CSVs | `data/parquet/`, `results/tables/storage_comparison.csv` |
-| 8 | `analysis.py` | `football.db`, `match_features.csv` | `results/figures/`, `results/tables/` |
+| 8 | `analysis.py` | `football.db`, `match_features.csv` | `results/figures/` (7 charts), `results/tables/` (13 tables), `results/summary.txt` (one observation + one interpretation line per result) |
 
 During collection, `scrape.py` ran once a day (cron: `0 11 * * * cd /path/to/project && python3 scrape.py`).
 
@@ -62,12 +64,15 @@ During collection, `scrape.py` ran once a day (cron: `0 11 * * * cd /path/to/pro
 - **Team rank at kickoff** is rebuilt from official results of matches finished *before* each kickoff. It matches all 6 standings files we saved during collection.
 - **Seat groups** (side, behind goal, corner, premium, away) come from keyword rules on the platform's labels, with no stadium-by-stadium manual mapping.
 - **Storage:** SQLite with 5 normalised tables and primary/foreign keys, compared with CSV and Parquet + DuckDB.
+- **Analysis:** descriptive statistics, a regression with match fixed effects (how the price moves within a match in the last 21 days, each match indexed to its own level 14–21 days before kickoff) and one small OLS between matches. Results are associations, not causal effects.
 
 ## Data notes and limitations
 - Asking prices only: no transactions or listing IDs. A drop in listed tickets is **supply**, not sales.
 - One platform (Ticombo). StubHub and viagogo were rejected because their terms forbid scrapers.
-- No snapshot on 03.10; the 06.10 run was interrupted. Snapshot times vary between about 05:00 and 21:00 UTC.
-- Seat category rows cover about 37% of listed tickets, so seat results are secondary.
+- No snapshot on 03.10. Snapshot times vary between about 05:00 and 21:00 UTC.
+- The 06.10 run was interrupted (05:53 UTC) and redone at 06:19 for all 97 matches: 49 rows of `scrape_log.csv` from the interrupted run point to pages that were deleted, and `parse.py` skips them with a warning (5,484 logged pages − 49 = 5,435 snapshots).
+- 28 pages from a partial, unlogged run on 22.10 (08:07 UTC, Premier League only) are in the zip but not in the log, so `parse.py` never reads them (5,435 + 28 = 5,463 pages). Each of these matches has its logged 22.10 page from the 21:04 run, so no snapshot day is lost.
+- Seat categories describe about 51% of the listed tickets (PL 52.5%, LaLiga 42.8%; `results/tables/a0_coverage.csv`), so seat results are secondary.
 - Two LaLiga matches (564717, 564733) never had listings before kickoff.
 
 ## Files
@@ -87,8 +92,7 @@ During collection, `scrape.py` ran once a day (cron: `0 11 * * * cd /path/to/pro
 | `data/reference/match_urls.csv` | link between each match and its Ticombo page |
 | `data/reference/seat_category_map.csv` | seat label → seat group and stand level |
 | `data/reference/derbies.csv` | hand-made derby list: same city, plus El Clásico, Liverpool–Man United and the Basque derby |
-| `data/reference/face_values.csv` | official prices from club websites (dropped from the analysis after peer review) |
-| `results/` | tables and figures for the report |
+| `results/` | `figures/` and `tables/` from `analysis.py` (file names start with the analysis ID, A0–A6), `summary.txt` with the results in words, `tables/storage_comparison.csv` from `compare_storage.py` |
 | `docs/justification.docx` | round 1 justification of our choices |
 | `docs/tos_checks/` | screenshots of the terms of service and robots.txt we checked |
 | `football.db`, `data/parquet/` | **not in the repository**: rebuilt by `store.py` / `compare_storage.py` |

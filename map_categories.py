@@ -102,7 +102,9 @@ labels = (cats.groupby("category")
                    n_tickets=("availableTickets", "sum"),
                    n_matches=("match_id", "nunique"))
               .reset_index()
-              .sort_values("n_tickets", ascending=False))
+              # tie-break on the label so labels with the same ticket count always come
+              # out in the same order (the default sort is not stable across pandas versions)
+              .sort_values(["n_tickets", "category"], ascending=[False, True]))
 
 labels["label_norm"] = labels["category"].apply(normalise)
 result = labels["label_norm"].apply(classify)
