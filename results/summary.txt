@@ -1,0 +1,34 @@
+A0 - Data description
+Observation: 97 of 100 matches have a Ticombo page; 3,367 pre-kickoff daily snapshots, 3,227 with a price (95 matches), 1,907 in the last 21 days. Days without any snapshot: 2026-10-03. Seat categories describe 50.7% of the listed tickets.
+Observation: example match Liverpool FC - Manchester United FC: median lowest price EUR 324 at 14-21 days and EUR 358 at 0-2 days, with day-to-day values between EUR 299 and EUR 571.
+Interpretation: coverage is almost complete in both leagues, so the trajectories are not driven by a few matches. A single match is noisy (this one even ends higher than 2-3 weeks before, against the average), which is why we compare medians over many matches and use a regression with match fixed effects. Categories describe only part of the listed tickets, so seat types stay a secondary analysis.
+
+A1 - Average trajectory (lowest price, last 21 days)
+Observation: in the median match the lowest price index is 66 (Premier League) and 82 (LaLiga) in the last 3 days (14-21 days = 100).
+Observation: fixed-effects regression (log price, match fixed effects, SE clustered by match; 1,907 snapshots, 95 matches): compared with 14-21 days before kickoff, the lowest price is -5.3% at 7-13 days, -13.4% at 3-6 days and -23.0% at 0-2 days (95% CI -29% to -17%); Premier League -28.9%, LaLiga -16.1% at 0-2 days. October preliminary result: -19% (PL -27%, LaLiga -9%).
+Interpretation: within the same match, the cheapest ticket on offer gets cheaper as kickoff approaches, mostly in the last week, and more in the Premier League. This fits sellers cutting their asking price before the ticket loses its value, but also new cheaper listings or expensive ones being withdrawn: without listing IDs we cannot tell these apart. The direction of the October result holds on the final data, with a larger drop.
+
+A2 - Do all matches behave alike?
+Observation: comparing the median lowest price at 0-2 days with 14-21 days (93 matches with both), 72% of matches fall by more than 5%, 14% stay within +/-5% and 14% rise (Premier League falling 79%, LaLiga 64%; with a +/-10% band: 61% falling, 12% rising).
+Observation: index in the last 3 days by price level of the match: cheapest third 95, middle 71, most expensive 67.
+Interpretation: a falling lowest price is the most common path but not a rule, so the A1 result describes the typical match, not every match. The drop is concentrated in the more expensive matches, while the cheapest ones hardly move (possibly less room to cut an already low price). Part of this gap can be regression to the mean (a match can look expensive at 14-21 days by chance).
+
+A3 - Listed supply
+Observation: in the median match the number of tickets listed is at index 78 (Premier League) and 78 (LaLiga) in the last 3 days and 70 / 35 on the last day (14-21 days = 100; 94 matches with tickets listed at 14-21 days).
+Observation: from one day to the next within a match, changes in tickets listed and in the lowest price have a correlation of -0.06 (1,779 day pairs, 95 matches); median correlation per match -0.06, negative in 61% of matches.
+Interpretation: listed supply stays flat until the last week and then shrinks quickly, most on the last day. Day-to-day changes in supply and in the lowest price are almost unrelated (correlation close to 0), so the price drop is not simply more tickets on offer. A change in listed tickets can be a ticket sold, withdrawn or newly listed: we read it as listed supply only.
+
+A4 - What explains differences between matches
+Observation: OLS on 94 matches (log of the median lowest price 7-14 days before, HC1 SE, R2 = 0.17): each place further down the table for the better of the two teams goes with -3.1% (p = 0.023); weekend +32.6% (p = 0.002); derby +88.3% (p = 0.030, only 6 derbies); Premier League vs LaLiga -8.8% (p = 0.44); rank gap -1.4% (p = 0.36).
+Observation: median price EUR 126 for weekend matches (82) vs EUR 95 on weekdays (12). October preliminary result: weekend +40%.
+Interpretation: matches involving a team high in the table, weekend matches and derbies are associated with higher asking prices, while the league itself adds little once these are taken into account. These are descriptive associations, not causal effects: there are few weekday matches and derbies, and most of the variation stays unexplained. The weekend association is the only one that survives dropping the top 1% prices (A6); the best-rank and derby associations depend on a few extreme matches.
+
+A5 - Seat categories (secondary: categories describe only part of the listed tickets)
+Observation: median category price 14-21 days before / index at 0-2 days: side EUR 344 / 93; behind goal EUR 288 / 90; premium EUR 547 / 86; corner EUR 292 / 110; away EUR 287 / 83.
+Interpretation: premium seats are the most expensive, but the three big groups (side, behind the goal, premium: most category tickets) all end below their level 2-3 weeks before, so the drop is not limited to one type of seat; corner seats (very few matches) are too few to read. The drop is smaller than in A1 because a category price is an average over all its listings, not the cheapest one.
+
+A6 - Robustness
+Observation: 0-2 days vs 14-21 days (same FE model): main: base price, last 21 days -23.0%; fees included -22.4%; without top 1% prices -24.2%; Premier League only -28.9%; LaLiga only -16.1%; all pre-match days (22+ bin added) -24.3%.
+Observation: 20 of the 29 top 1% snapshots in the 21-day window are FC Barcelona - Real Madrid CF, a genuinely expensive match, not a data error.
+Observation: A4 without the top 1% snapshots (92 matches, Hull City AFC - Brighton & Hove Albion FC, FC Barcelona - Real Madrid CF drop out): best rank -2.2% (p = 0.069), weekend +31.4% (p = 0.002), derby +57.7% (p = 0.069).
+Interpretation: the drop in the last days keeps the same sign whatever the price measure, the extreme prices or the window (between -16% and -29%, the leagues being the two ends), so the main result does not depend on these choices. Between matches (A4), the weekend association is the only one that survives dropping the top 1%; best rank and derby depend on a few extreme matches (Hull City AFC - Brighton & Hove Albion FC, FC Barcelona - Real Madrid CF).

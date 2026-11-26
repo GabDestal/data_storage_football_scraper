@@ -40,7 +40,7 @@ clean_data.py     → data/clean/{events,categories}_all_clean.csv (flags), *_pr
 map_categories.py → data/reference/seat_category_map.csv  (label → tier, automatic keyword rules)
 features.py       → data/clean/match_features.csv: ranks at kickoff (rebuilt from season results; matches all 6 saved standings files exactly), rank gap, derby, weekend, kickoff hour (league local time)
 store.py          → football.db (SQLite)
-analysis.py       → results/figures/*.png, results/tables/*.csv, results/summary.txt
+analysis.py       → results/figures/a*.png, results/tables/a*.csv, results/summary.txt (reads football.db + data/clean/match_features.csv)
 ```
 `config.py` holds the settings: competitions PL and PD, kickoff window 17.10–23.11.2026, platform ticombo.fr, user-agent, delays.
 
@@ -77,7 +77,7 @@ Categories (`categories_*.csv`): `category` (raw label), `averagePrice`, `availa
 2. **One snapshot per match per calendar day.** If there are two, keep the latest; the interrupted 06.10 run left duplicates.
 3. **Pre-kickoff snapshots only.** After the peer-review fix, the scraper kept collecting until 24.11, including matches already played.
 4. **Kickoff rule:** exclude a match only if the Ticombo and football-data kickoffs differ by **more than 1 day** after the final refresh. Gaps of a few hours are placeholder times, so keep them. The old rule (any mismatch) dropped 9 whole LaLiga matches, which was too aggressive.
-5. **Common window:** the last 21 days before kickoff, for trajectories. Every match has it (peer review 1).
+5. **Common window:** the last 21 days before kickoff, for trajectories (peer review 1). Collection started 27.09, so the 17 matches of 17–18.10 start at day 19–20 instead of 21; every price match has data in the 14–21 day bin, so each match is indexed to the median of its own 14–21 day bin (= 100), not to day −21.
 6. **Extreme prices** are flagged but kept, and handled through robustness checks (without the top 1%).
 7. **Face values and markup are dropped.** The reference file was never filled, face values are ranges, and the question doesn't need them.
 8. **Standings:** each team's rank at kickoff is recomputed in `features.py` from the official results of matches played *before* that kickoff (`data/raw/football_data/<date>_season_{PL,PD}.json`, from `get_season_results.py`), never later information. Replaces the planned weekly standings refreshes, which were only saved 3 times.
@@ -87,7 +87,7 @@ Categories (`categories_*.csv`): `category` (raw label), `averagePrice`, `availa
 
 - 03.10 has no snapshot (laptop off). Snapshot times vary between about 05:00 and 21:00 UTC.
 - The 06.10 run was interrupted. Its log lines point to deleted files, and `parse.py` skips them with a warning.
-- Category totals **don't match** match totals: categories cover about 37% of listed tickets.
+- Category totals **don't match** match totals: categories describe 50.7% of the listed tickets (A0: sum of category tickets / match tickets on snapshots with a price; PL 52.5%, LaLiga 42.8%).
   - 191 raw labels across about 40 stadiums, so categories stay a **secondary** analysis.
 - Some matches have days with no listings (0 tickets). The page can still show an old "from" price, so `flag_no_listings` is based on tickets, not on a missing price. Exclude them from price analyses and keep them for supply. Two LaLiga matches (564717, 564733) never had listings before kickoff.
 - Cleaning result (`data/clean/quality_summary.json`): 5,435 event rows, 2,068 post-kickoff, 0 duplicate days, 0 kickoff mismatches → 3,367 pre-match rows (97 matches); 124 no-listing, 16 inconsistent fee → 3,227 price rows (95 matches), 1,907 of them in the 21-day window. Top 1% threshold on the base price: €897.40 (33 rows, 5 matches; 22 of the rows are El Clásico).
@@ -118,14 +118,14 @@ Automatic, no stadium-by-stadium manual mapping:
 | ID | Analysis | Answers |
 |---|---|---|
 | A0 | Data description: snapshots per day, matches per league, coverage; one example match chart (peer review 2's EDA) | quality |
-| A1 | Average trajectory: price indexed to 100 at day −21, median + middle-50% band by league; FE regression `log(price) ~ C(days bin) + C(match_id)` with SE clustered by match; bins 14–21 (reference), 7–13, 3–6, 0–2 | how prices move |
+| A1 | Average trajectory: price indexed to the match's 14–21 day median (= 100), median + middle-50% band by league; FE regression `log(price) ~ C(days bin) + C(match_id)` with SE clustered by match; bins on whole days before kickoff (rounded down): 14–21 (reference), 7–13, 3–6, 0–2 | how prices move |
 | A2 | Different paths: share of matches falling / flat / rising (0–2 days vs 14–21 days); trajectories by price third and by league | do all matches behave alike |
 | A3 | Listed supply by day (indexed) + within-match correlation of daily changes in supply and price. Wording: supply, never sales. | supply |
 | A4 | Price level between matches: median lowest price 7–14 days before vs league, best rank, rank gap, weekend, derby; one simple OLS with HC1 SE. Main factors: league + team rank; derby and weekend secondary. | what explains differences |
 | A5 | Seat tiers: median category price by tier by day (secondary, with the coverage caveat) | seat types |
 | A6 | Robustness: base price vs fees included, without top 1%, each league alone, full window vs 21 days | credibility |
 
-Preliminary result on October data (70 matches): the lowest price is about **19% lower in the last 2 days** than 14–21 days before (PL −27%, LaLiga −9%). Weekend matches are about 40% more expensive. This must be **re-checked on the final data**.
+Final results (`results/summary.txt`, 1,907 snapshots, 95 matches): the lowest price is **23% lower at 0–2 days** than at 14–21 days (95% CI −29% to −17%; PL −29%, LaLiga −16%), −13% at 3–6 days, −5% at 7–13 days. Weekend matches are about 33% more expensive (A4, 94 matches, p = 0.002). The October preliminary results (−19%, PL −27%, LaLiga −9%; weekend +40%) hold in direction. The weekend association is the only one robust to dropping the top 1% prices; best rank and derby (p ≈ 0.07 without them) depend on a few extreme matches (El Clásico, Hull City–Brighton).
 
 `data/reference/derbies.csv` holds the hand-made derby list. Definition: same city, plus El Clásico, Liverpool–Man United and the Basque derby (Athletic–Real Sociedad). 26 pairs (`team_a`, `team_b`, `competition`, `derby_type`, `derby_name`), names exactly as in `matches.csv`. 6 of our 100 matches are derbies. Not included (borderline, group to decide): Getafe vs Madrid clubs, Celta–Deportivo, Newcastle–Sunderland.
 

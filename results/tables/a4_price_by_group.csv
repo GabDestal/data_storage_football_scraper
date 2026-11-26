@@ -1,0 +1,10 @@
+variable,group,n_matches,median_price_eur
+competition,Premier League,49,95.8
+competition,LaLiga,45,130.0
+weekend,weekend,82,126.1
+weekend,weekday,12,95.3
+derby,derby,6,267.5
+derby,no derby,88,110.5
+rank_group,best team top 4,32,137.7
+rank_group,best team 5-10,34,105.4
+rank_group,best team 11-20,28,97.3
