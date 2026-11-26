@@ -1,0 +1,6 @@
+term,pct_effect,p_value,n_matches
+Premier League (vs LaLiga),-10.5427,0.3071,92
+best rank (+1 place),-2.185,0.0691,92
+rank gap (+1 place),-1.2843,0.3807,92
+weekend,31.3703,0.0023,92
+derby,57.7172,0.0689,92

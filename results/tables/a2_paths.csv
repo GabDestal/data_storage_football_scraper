@@ -1,0 +1,7 @@
+flat_band_pct,league,n_matches,falling,flat,rising,falling_pct,flat_pct,rising_pct
+5,Premier League,48,38,5,5,79.2,10.4,10.4
+5,LaLiga,45,29,8,8,64.4,17.8,17.8
+5,both,93,67,13,13,72.0,14.0,14.0
+10,Premier League,48,34,9,5,70.8,18.8,10.4
+10,LaLiga,45,23,16,6,51.1,35.6,13.3
+10,both,93,57,25,11,61.3,26.9,11.8

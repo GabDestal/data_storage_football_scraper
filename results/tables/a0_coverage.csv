@@ -1,0 +1,4 @@
+league,matches_in_scope,matches_with_ticombo_page,pre_match_snapshots,matches_pre_match,price_snapshots,matches_with_price,price_snapshots_21d,matches_21d,median_days_per_match,category_ticket_share_pct
+Premier League,50,50,1739,50,1681,50,997,50,33.0,52.5
+LaLiga,50,47,1628,47,1546,45,910,45,33.0,42.8
+both,100,97,3367,97,3227,95,1907,95,33.0,50.7
