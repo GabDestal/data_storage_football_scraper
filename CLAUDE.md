@@ -38,7 +38,7 @@ scrape.py         → data/raw/ticombo/<date>/*.html + data/raw/scrape_log.csv  
 parse.py          → data/events_v0.csv, data/categories_v0.csv
 clean_data.py     → data/clean/{events,categories}_all_clean.csv (flags), *_pre_match.csv, quality_summary.json
 map_categories.py → data/reference/seat_category_map.csv  (label → tier, automatic keyword rules)
-features.py       → match features: ranks at kickoff date, rank gap, derby, weekend, kickoff hour
+features.py       → data/clean/match_features.csv: ranks at kickoff (rebuilt from season results; matches all 6 saved standings files exactly), rank gap, derby, weekend, kickoff hour (league local time)
 store.py          → football.db (SQLite)
 analysis.py       → results/figures/*.png, results/tables/*.csv, results/summary.txt
 ```
