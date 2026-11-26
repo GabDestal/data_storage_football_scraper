@@ -102,21 +102,23 @@ Parquet + DuckDB & 5 & 0.39 & 10.8 & yes & no & no \\
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.48\textwidth]{a0_example_match.png}
+\begin{minipage}[t]{0.49\textwidth}
+\centering
+\includegraphics[width=\linewidth]{a0_example_match.png}
 \caption{Example match Liverpool--Manchester United (North West derby): lowest asking price without fees on every pre-kickoff day.}
 \label{fig:a0}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.49\textwidth}
+\centering
+\includegraphics[width=\linewidth]{a1_trajectory_by_league.png}
+\caption{Lowest asking price before kickoff, indexed to each match's 14--21 day median (median and middle 50\%).}
+\label{fig:a1}
+\end{minipage}
 \end{figure}
 
 \subsection*{A1 How prices move}
 \obs In the median match the price index is 66 (Premier League) and 82 (LaLiga) in the last 3 days (Figure~\ref{fig:a1}). In the FE model the lowest price is 23.0\% lower at 0--2 days than at 14--21 days (Table~\ref{tab:fe}). Our October preliminary estimate was $-19$\%.
 \interp Within a match, the cheapest ticket on offer gets cheaper as kickoff approaches, mostly in the last week and more in the Premier League. This fits sellers cutting prices before the ticket loses its value, but also new cheap listings or expensive ones being withdrawn. Without listing IDs we cannot tell these apart.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.68\textwidth]{a1_trajectory_by_league.png}
-\caption{Lowest asking price before kickoff, indexed to each match's 14--21 day median (median and middle 50\%).}
-\label{fig:a1}
-\end{figure}
 
 \begin{table}[htbp]
 \centering
@@ -175,10 +177,13 @@ Matches & 94 & 92 \\
 \obs The 0--2 day drop is $-22.4$\% with fees included, $-24.2$\% without the top 1\% prices and $-24.3$\% with all pre-kickoff days. In that full window, prices more than 21 days before kickoff are 14.6\% above the 14--21 day level.
 \interp The last-days drop keeps its sign and size under every choice, so it does not depend on the fee, the extreme prices or the window.
 
+\subsection*{Conclusion}
+On Ticombo, the cheapest asking price falls before kickoff: $-23$\% in the last 3 days compared with 14--21 days before, mostly in the final week and more in the Premier League ($-29$\%) than in LaLiga ($-16$\%). Listed supply shrinks too, but its daily changes barely track price changes. Between matches, only the weekend premium ($+33$\%) is robust. These are associations in asking prices on one platform, not transactions or causal effects.
+
 \section{Limitations}
 \begin{itemize}
 \item Asking prices on one platform, with no transactions and no listing IDs: we cannot tell whether the lowest price falls because sellers cut prices, cheaper tickets are listed or expensive ones leave. Other resale sites and official exchanges are not covered.
-\item One snapshot per day, between about 05:00 and 21:00 UTC; 03.10 is missing. The interrupted 06.10 run (05:53 UTC) was redone at 06:19 and its 49 pages were deleted. 28 pages of a partial, unlogged 22.10 run (08:07 UTC) duplicate the logged 21:04 run and are not parsed. Neither incident loses a snapshot day.
+\item One snapshot per day (about 05:00--21:00 UTC); 03.10 is missing. Two partial runs were not used (49 pages of the interrupted 06.10 run, redone the same morning; 28 unlogged pages on 22.10), so no snapshot day is lost (details in the README).
 \item Seat categories describe 50.7\% of the listed tickets. Ranks at kickoff ignore LaLiga's head-to-head tie-break, but our rebuilt tables match the standings saved on 3 dates (6 files).
 \item A4 rests on 94 matches (12 on weekdays, 6 derbies) with $R^2=0.17$. Thin markets can set a match's price level: Hull City--Brighton had 4 tickets at \eur 1,500 for six days.
 \end{itemize}
