@@ -15,7 +15,7 @@
 #  5. fee check: the fees-included price should be 1.30 x the base price; from 04.11 some
 #     listings show 1.35 (looks like a fee increase), so we keep 1.30-1.35 and only flag
 #     ratios outside that range as inconsistent
-#  6. extreme prices (top 1%) are flagged but kept -> robustness check
+#  6. extreme prices (top 1% of the base price) are flagged but kept -> robustness check
 #  7. the 21-day window is a flag for the analysis, not a deletion
 
 import os
@@ -75,8 +75,10 @@ events["eligible_price"] = (events["eligible_pre_match"] & ~events["flag_no_list
                             & ~events["flag_fee_inconsistent"])
 
 # --- 6. extreme prices: top 1% of the usable lowest prices ---
-p99 = events.loc[events["eligible_price"], "listing_finalStartPrice"].quantile(0.99)
-events["flag_extreme_price"] = events["eligible_price"] & (events["listing_finalStartPrice"] > p99)
+# computed on the base price (listing_startPrice), our main measure: the fee-included price
+# moved from 1.30x to 1.35x on 04.11, so a threshold on it would shift over time
+p99 = events.loc[events["eligible_price"], "listing_startPrice"].quantile(0.99)
+events["flag_extreme_price"] = events["eligible_price"] & (events["listing_startPrice"] > p99)
 
 # --- 7. common window: the last 21 days before kickoff ---
 events["in_window_21d"] = (events["days_to_kickoff_exact"] > 0) & (events["days_to_kickoff_exact"] <= 21)
