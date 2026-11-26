@@ -52,7 +52,7 @@ The football-data.org files are already in `data/raw/football_data/`, so `get_ma
 | 6 | `features.py` | `matches.csv`, season results, `derbies.csv` | `data/clean/match_features.csv` |
 | 7 | `store.py` | clean data, `matches.csv`, standings, seat map | `football.db` (SQLite, 5 tables) |
 | 7b | `compare_storage.py` | `football.db`, clean CSVs | `data/parquet/`, `results/tables/storage_comparison.csv` |
-| 8 | `analysis.py` *(in progress)* | `football.db`, `match_features.csv` | `results/figures/`, `results/tables/` |
+| 8 | `analysis.py` | `football.db`, `match_features.csv` | `results/figures/`, `results/tables/` |
 
 During collection, `scrape.py` ran once a day (cron: `0 11 * * * cd /path/to/project && python3 scrape.py`).
 
