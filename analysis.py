@@ -2,7 +2,7 @@
 #what explains the differences between matches (A4), seat categories (A5, secondary),
 #robustness checks (A6). A0 describes the data first.
 
-#Input : football.db (store.py), data/clean/match_features.csv (features.py),
+#Input : football.db (store.py, match features included),
 #        data/clean/quality_summary.json (clean_data.py, used as a check)
 #Output: results/figures/a*.png, results/tables/a*.csv,
 #        results/summary.txt   one "Observation" and one "Interpretation" line per result
@@ -716,8 +716,12 @@ categories = pd.read_sql("""
     JOIN seat_categories s ON s.category = c.category
     JOIN event_snapshots e ON e.match_id = c.match_id AND e.snapshot_utc = c.snapshot_utc
     WHERE e.eligible_price = 1""", con)
+# match features (from features.py) are stored in the matches table by store.py
+features = pd.read_sql("""
+    SELECT match_id, home_rank, away_rank, best_rank, rank_gap, home_points, away_points,
+           games_played_before, derby, derby_name, weekend, kickoff_weekday, kickoff_hour_local
+    FROM matches""", con)
 con.close()
-features = pd.read_csv("data/clean/match_features.csv", encoding="utf-8-sig")
 with open("data/clean/quality_summary.json") as f:
     quality = json.load(f)
 
