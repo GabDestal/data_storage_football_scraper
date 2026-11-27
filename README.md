@@ -1,6 +1,6 @@
 # Group G – Football ticket resale prices
 
-Charles, Erdem, Chris, Liam, Gabriel
+Charles MONTLUC, Erdem SANVER, Chris KARAM, Liam SZEFNER, Gabriel DESTAL
 
 **Question:** how do football ticket resale (asking) prices evolve in the weeks before a match, and what explains the differences between matches? Seat categories are a secondary, descriptive analysis.
 
